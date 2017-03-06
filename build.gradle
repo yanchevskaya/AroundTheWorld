@@ -1,0 +1,31 @@
+group 'com.epam.fp.atw'
+version '1.0-SNAPSHOT'//plug version
+
+apply plugin: 'java'
+apply plugin: 'war' //for web
+
+sourceCompatibility = 1.8 //specifies that version of the Java programming language be used to compile .java files
+targetCompatibility = 1.8 //the option ensures that the generated class will be compatible with VMs specified by targetCompatibility.
+
+repositories {
+    mavenCentral()
+    jcenter()
+    mavenLocal()
+    maven {url 'https://jitpack.io'}
+}
+
+configurations{
+    testCompile.extendsFrom compileOnly //to using lombok in tests
+}
+
+dependencies {
+    compile 'ch.qos.logback:logback-classic:+' //logger
+
+    providedCompile 'org.apache.tomcat:tomcat-api:+',//tomcat indeed
+            'org.apache.tomcat:tomcat-jsp-api:+'
+
+    compileOnly 'org.projectlombok:lombok:+'
+
+    testCompile 'org.junit.jupiter:junit-jupiter-api:+', //JUnit5
+            'org.hamcrest:java-hamcrest:+'//for JUnit
+    }
