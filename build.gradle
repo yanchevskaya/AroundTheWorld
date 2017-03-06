@@ -29,3 +29,7 @@ dependencies {
     testCompile 'org.junit.jupiter:junit-jupiter-api:+', //JUnit5
             'org.hamcrest:java-hamcrest:+'//for JUnit
     }
+
+task wrapper(type: Wrapper) {//wrapper for Gradle
+    gradleVersion = '3.2.1'
+}
