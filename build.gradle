@@ -18,8 +18,14 @@ configurations{
     testCompile.extendsFrom compileOnly //to using lombok in tests
 }
 
-dependencies {
-    compile 'ch.qos.logback:logback-classic:+' //logger
+dependencies { 
+//    compile 'ch.qos.logback:logback-classic:+', //logger
+    compile 'com.h2database:h2:+', //DB H2
+            'org.glassfish.web:javax.servlet.jsp.jstl:+',
+            'org.apache.commons:commons-io:+',
+            'commons-fileupload:commons-fileupload:+',//upload files
+            'org.apache.logging.log4j:log4j-api:2.8.1',
+            'org.apache.logging.log4j:log4j-core:2.8.1'
 
     providedCompile 'org.apache.tomcat:tomcat-api:+',//tomcat indeed
             'org.apache.tomcat:tomcat-jsp-api:+'

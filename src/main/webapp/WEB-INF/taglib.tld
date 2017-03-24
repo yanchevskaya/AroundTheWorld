@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<taglib xmlns="http://java.sun.com/xml/ns/javaee"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-jsptaglibrary_2_1.xsd"
+        version="2.1">
+
+    <tlib-version>1.0</tlib-version>
+    <short-name>usertag</short-name>
+    <uri>com.epam.lizhen</uri>
+
+    <tag>
+        <name>profile</name>
+        <tag-class>tags.ProfileTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>traveller</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>travellers</name>
+        <tag-class>tags.TravellersTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>travellersList</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>countries</name>
+        <tag-class>tags.CountryTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>countryList</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>cities</name>
+        <tag-class>tags.CityTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>cityList</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+    <tag>
+        <name>routes</name>
+        <tag-class>tags.RouteTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>routeList</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+
+    <tag>
+        <name>myRoutes</name>
+        <tag-class>tags.MyRouteTag</tag-class>
+        <body-content>empty</body-content>
+        <attribute>
+            <name>routeList</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+    </tag>
+
+
+</taglib>
