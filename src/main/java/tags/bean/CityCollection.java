@@ -5,7 +5,7 @@ import model.City;
 import java.util.Collection;
 
 /**
- * Bean for list of Cities
+ * Bean for CityTag
  * @author Ali Yan
  * @version 1.0
  */
@@ -33,6 +33,7 @@ public class CityCollection {
         return amount;
     }
 
+    @SuppressWarnings("unused")
     public void setAmount(int amount) {
         this.amount = amount;
     }
@@ -41,6 +42,7 @@ public class CityCollection {
         return countryName;
     }
 
+    @SuppressWarnings("unused")
     public void setCountryName(String countryName) {
         this.countryName = countryName;
     }

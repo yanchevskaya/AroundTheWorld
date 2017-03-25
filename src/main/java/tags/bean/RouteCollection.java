@@ -2,19 +2,17 @@ package tags.bean;
 
 import model.Route;
 
+import java.io.Serializable;
 import java.util.Collection;
 
 /**
- * Bean for list of Routes
+ * Bean for RoutesTag
  * @author Ali Yan
  * @version 1.0
  */
-public class RouteCollection {
-
+public class RouteCollection implements Serializable {
         private Collection<Route> routes;
         private int amount;
-
-        public RouteCollection(){}
 
         public RouteCollection(Collection<Route> routes, int amount) {
             this.amount = amount;
@@ -30,10 +28,8 @@ public class RouteCollection {
         public int getAmount() {
             return amount;
         }
-
+        @SuppressWarnings("unused")
         public void setAmount(int amount) {
             this.amount = amount;
         }
-
-
     }

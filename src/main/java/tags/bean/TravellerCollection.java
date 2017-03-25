@@ -1,21 +1,24 @@
 package tags.bean;
-import model.Country;
+
 import model.Traveller;
 
+import java.io.Serializable;
 import java.util.Collection;
 
-public class TravellerCollection {
+/**
+ * Bean for TravellersTag
+ * @author Ali Yan
+ * @version 1.0
+ */
+public class TravellerCollection implements Serializable {
     private Collection<Traveller> travellers;
-    private Collection<Country> countries;
     private int amount;
-
-    public TravellerCollection(){}
 
     public TravellerCollection(Collection<Traveller> travellers, int amount) {
         this.amount = amount;
         this.travellers = travellers;
     }
-
+    @SuppressWarnings("unused")
     public void setTravellers(Collection<Traveller> travellers) {
         this.travellers = travellers;
     }
@@ -27,7 +30,7 @@ public class TravellerCollection {
     public int getAmount() {
         return amount;
     }
-
+    @SuppressWarnings("unused")
     public void setAmount(int amount) {
         this.amount = amount;
     }

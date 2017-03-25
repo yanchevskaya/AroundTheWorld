@@ -5,15 +5,13 @@ import model.Country;
 import java.util.Collection;
 
 /**
- * Bean for list of Countries
+ * Bean for CountryTag
  * @author Ali Yan
  * @version 1.0
  */
 public class CountryCollection {
     private Collection<Country> countries;
     private int amount;
-
-    public CountryCollection(){}
 
     public CountryCollection(Collection<Country> countries, int amount) {
         this.amount = amount;
@@ -30,6 +28,7 @@ public class CountryCollection {
         return amount;
     }
 
+    @SuppressWarnings("unused")
     public void setAmount(int amount) {
         this.amount = amount;
     }

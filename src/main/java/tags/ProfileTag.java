@@ -1,7 +1,5 @@
 package tags;
 
-import controller.authorization.Authorization;
-import lombok.SneakyThrows;
 import model.Traveller;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -14,15 +12,13 @@ import java.time.LocalDate;
 import java.util.Formatter;
 
 /**
- * show information about user o
+ * Tag for displaying information about user
+ * @author Ali Yan
+ * @version 1.0
  */
 public class ProfileTag extends TagSupport {
     private Traveller traveller;
-    private static final Logger log = LogManager.getLogger(TagSupport.class);
-
-    public Traveller getTraveller() {
-        return traveller;
-    }
+    private static final Logger log = LogManager.getLogger(ProfileTag.class);
 
     public void setTraveller(Traveller traveller) {
         this.traveller = traveller;
@@ -30,18 +26,20 @@ public class ProfileTag extends TagSupport {
 
     @Override
     public int doStartTag() throws JspException {
+        /**
+         * get new format of date of birth
+         */
         Formatter formatter = new Formatter();
         LocalDate birth = traveller.getDateOfBirth();
         formatter.format("%td %tB",birth,birth);
-
+        JspWriter out = pageContext.getOut();
         try {
-            JspWriter out = pageContext.getOut();
             out.write("<h3>" + traveller.getFirstName() + " " + traveller.getLastName() +
-                    "</br>" + formatter + "</h3><br/>");
+                     "<br/>"+formatter + "</h3>");
 
             if (traveller.getCurrentCity() != null)
-                out.write("<h3>"+traveller.getCurrentCity().toString() + "</h3><br/>");
-         }catch (IOException e){
+                out.write("<h4>"+traveller.getCurrentCity().toString() + "</h4>");
+        }catch (IOException e){
             log.error(e.getMessage());
         } finally {
              formatter.close();

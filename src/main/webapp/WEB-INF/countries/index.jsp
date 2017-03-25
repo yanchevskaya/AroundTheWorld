@@ -7,12 +7,9 @@
 <head>
     <fmt:setLocale value="${sessionScope.local}"/>
     <fmt:setBundle basename="localization.local" var="loc" />
-    <fmt:message bundle="${loc}" key="local.button.name.ru" var="ru_name" />
-    <fmt:message bundle="${loc}" key="local.button.name.en" var="en_name" />
     <fmt:message bundle="${loc}" key="logout" var="logout" />
     <fmt:message bundle="${loc}" key="countries" var="entitle" />
     <fmt:message bundle="${loc}" key="profile" var="profile" />
-    <fmt:message bundle="${loc}" key="language" var="language" />
     <fmt:message bundle="${loc}" key="mainpage" var="main" />
 
     <title>${entitle}</title>
@@ -24,7 +21,6 @@
 <a href = "logout"> ${logout}</a><br/><br/>
 
 <form action="/countries" method="post">
-    <input type="hidden" name="command" value="naming" />
     <input name = "traveller" value=""/>
     <input type="submit" value="Find"/><br/>
 </form>

@@ -9,7 +9,6 @@
     <fmt:setBundle basename="localization.local" var="loc" />
     <fmt:message bundle="${loc}" key="logout" var="logout" />
     <fmt:message bundle="${loc}" key="profile" var="profile" />
-    <fmt:message bundle="${loc}" key="language" var="language" />
     <fmt:message bundle="${loc}" key="mainpage" var="main" />
 
     <title>${country}</title>

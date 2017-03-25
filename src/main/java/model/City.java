@@ -5,12 +5,24 @@ import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
-public class City extends Country{
-//    id INT AUTO_INCREMENT PRIMARY KEY,
+
+/**
+ * Bean for saving Cities
+ * @author Ali Yan
+ * @version 1.0
+ */
+public class City implements Comparable{
+    /**
+     * amount of id - autoincrement in data base
+     */
     private int id;
-//    name VARCHAR(100) NOT NULL,
+    /**
+     * name of city
+     */
     private String name;
-//    country_id INT,
+    /**
+     *
+     */
     private Country country;
 
     public int getId() {
@@ -69,5 +81,10 @@ public class City extends Country{
 
     public String toString() {
         return this.getCountry().toString() + " - " +this.getName();
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        return 0;
     }
 }

@@ -14,9 +14,8 @@
 <body>
 
 <form action="/entrance/authorization" method="post">
-    <input type="hidden" name="command" value="naming" /><c:out value="e-mail:"/>
-    <input name= "j_username" placeholder="e-mail"/><br/><c:out value="${password}"/>
-    <input type = password name = "j_password" placeholder="password"/><br/>
+    <c:out value="e-mail:"/><input name= "j_username" placeholder="e-mail"/><br/>
+    <c:out value="${password}"/> <input type = password name = "j_password" placeholder="password"/><br/>
 
     <input type = "submit" value="${log_in}"/>
 </form>
