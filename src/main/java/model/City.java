@@ -7,22 +7,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 
 /**
- * Bean for saving Cities
+ * Bean for saving information about Cities
  * @author Ali Yan
  * @version 1.0
  */
-public class City implements Comparable{
+public class City  {
     /**
      * amount of id - autoincrement in data base
      */
     private int id;
-    /**
-     * name of city
-     */
     private String name;
-    /**
-     *
-     */
     private Country country;
 
     public int getId() {
@@ -49,6 +43,9 @@ public class City implements Comparable{
         this.country = country;
     }
 
+
+    @Override
+    @SuppressWarnings("all")
     public boolean equals(Object o) {
         if (o == this) return true;
         if (!(o instanceof City)) return false;
@@ -64,6 +61,7 @@ public class City implements Comparable{
         return true;
     }
 
+    @Override
     public int hashCode() {
         final int PRIME = 59;
         int result = 1;
@@ -79,12 +77,9 @@ public class City implements Comparable{
         return other instanceof City;
     }
 
+    @Override
     public String toString() {
-        return this.getCountry().toString() + " - " +this.getName();
+        return this.getCountry().toString() + " - " + this.getName();
     }
 
-    @Override
-    public int compareTo(Object o) {
-        return 0;
-    }
 }

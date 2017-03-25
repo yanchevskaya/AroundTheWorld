@@ -29,7 +29,7 @@ public class H2TravellerDao implements TravellerDao {
                              "VALUES (?, ?, ?, ?, ?, ?, ?, ?)", Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setObject(1, traveller.getFirstName());
             preparedStatement.setObject(2, traveller.getLastName());
-            preparedStatement.setObject(3, traveller.getGender().ordinal() + 1);//TODO: переделать на спецполе
+            preparedStatement.setObject(3, traveller.getGender().ordinal() + 1);
             preparedStatement.setObject(4, traveller.getDateOfBirth());
             if (traveller.getAvatar()!=null)
             preparedStatement.setObject(5, traveller.getAvatar());
@@ -175,7 +175,7 @@ public class H2TravellerDao implements TravellerDao {
                         resultSet.getInt("id"),
                         resultSet.getString("first_name"),
                         resultSet.getString("last_name"),
-                        Gender.valueOf(resultSet.getInt("gender_id") - 1).orElseThrow(() -> new RuntimeException("No such gender!")),
+                        Gender.valueOf(resultSet.getInt("gender_id") - 1),
                         resultSet.getDate("date_of_birth").toLocalDate()));
             }
         }

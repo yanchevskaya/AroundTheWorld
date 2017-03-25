@@ -9,14 +9,15 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Getter
 @Setter
+
 /**
- * Class for saving users
+ * Bean for saving information about Countries
  * @author Ali Yan
  * @version 1.0
  */
 public class Traveller {
     /**
-     * for saving in session
+     * parameter for saving user in session
      */
     public static String TRAVELLER = "traveller";
     /**
@@ -49,6 +50,7 @@ public class Traveller {
         this.firstName = firstName;
         this.lastName = lastName;
         }
+
     public Traveller(int id, String firstName, String lastName, LocalDate dateOfBirth){
         this.id = id;
         this.firstName = firstName;
@@ -86,6 +88,7 @@ public class Traveller {
         this.dateOfBirth = dateOfBirth;
         this.currentCity = currentCity;
         }
+
     public Traveller(int id, String firstName, String lastName, Gender gender,LocalDate dateOfBirth){
         this.id = id;
         this.firstName = firstName;

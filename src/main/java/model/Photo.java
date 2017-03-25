@@ -1,12 +1,16 @@
 package model;
 
-import lombok.Value;
+/**
+ * Bean for saving information about Countries
+ * @author Ali Yan
+ * @version 1.0
+ */
 
-@Value
 public class Photo {
-//    id INT AUTO_INCREMENT PRIMARY KEY,
+    /**
+     * amount of id - autoincrement in data base
+     */
     private int id;
     private String photoName;
-//    photo BLOB NOT NULL
-    private String photoLink; //link for cloud?
+    private String photoLink;
 }

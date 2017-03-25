@@ -11,9 +11,15 @@ import java.util.Optional;
 public enum Gender {
     MALE, FEMALE;
 
-    public static Optional<Gender> valueOf(int id) {
+    /**
+     *
+     * @param id - id og Gender 0 = male, 1 = female
+     * @return Optional of Gender
+     */
+    public static Gender valueOf(int id) {
+
         return Arrays.stream(values())
                 .filter(gender -> gender.ordinal() == id)
-                .findAny(); 
+                .findAny().orElse(null);
     }
 }

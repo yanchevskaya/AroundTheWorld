@@ -4,7 +4,6 @@ package controller.giveInfo.routes;
 import dao.RouteDao;
 import dao.TravellerDao;
 import model.City;
-import model.PersonalRoute;
 import model.Route;
 import model.Traveller;
 
@@ -23,7 +22,6 @@ public class ManageRoute extends HttpServlet {
     private TravellerDao travellerDao;
     private RouteDao routeDao;
     private Route route;
-    private PersonalRoute personalRoute;
     private City city;
 
     @Override

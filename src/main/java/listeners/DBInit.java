@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 
 @WebListener
 @Log
-public class dbinit implements ServletContextListener {
+public class DBInit implements ServletContextListener {
 
     @Resource(name = "jdbc/TestDB")
     private DataSource dataSource;

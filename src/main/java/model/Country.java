@@ -5,10 +5,17 @@ import lombok.NoArgsConstructor;
 
 @AllArgsConstructor
 @NoArgsConstructor
+
+/**
+ * Bean for saving information about Countries
+ * @author Ali Yan
+ * @version 1.0
+ */
 public class Country {
-//    id INT AUTO_INCREMENT PRIMARY KEY,
+    /**
+     * amount of id - autoincrement in data base
+     */
     private int id;
-//    name VARCHAR(100) NOT NULL
     private String name;
 
     public int getId() {
@@ -27,6 +34,8 @@ public class Country {
         this.name = name;
     }
 
+    @Override
+    @SuppressWarnings("all")
     public boolean equals(Object o) {
         if (o == this) return true;
         if (!(o instanceof Country)) return false;
@@ -39,6 +48,7 @@ public class Country {
         return true;
     }
 
+    @Override
     public int hashCode() {
         final int PRIME = 59;
         int result = 1;
@@ -52,6 +62,7 @@ public class Country {
         return other instanceof Country;
     }
 
+    @Override
     public String toString() {
         return this.getName();
     }

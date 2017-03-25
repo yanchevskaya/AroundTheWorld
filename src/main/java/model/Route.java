@@ -1,18 +1,28 @@
 package model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.Value;
+import lombok.*;
+
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Setter
+@Getter
+
+/**
+ * Bean for saving information about Countries
+ * @author Ali Yan
+ * @version 1.0
+ */
 public class Route {
-//    id INT AUTO_INCREMENT PRIMARY KEY,
+    /**
+     * amount of id - autoincrement in data base
+     */
     private int id;
-//    name VARCHAR(500) NOT NULL,
     private String name;
+    /**
+     * Traveller who created route
+     */
     private Traveller traveller;
     private String description;
 }
