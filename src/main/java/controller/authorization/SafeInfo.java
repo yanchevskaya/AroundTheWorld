@@ -26,7 +26,6 @@ import static model.Traveller.TRAVELLER;
 @WebServlet("/registration/safeInfo")
 public class SafeInfo extends HttpServlet {
     private TravellerDao travellerDao;
-    private static final String  ERROR_PATH = "/WEB-INF/error/emailError.jsp";
     private static final String  ERROR_NAME = "error";
     private static final Logger log = LogManager.getLogger(SafeInfo.class);
 
@@ -37,59 +36,49 @@ public class SafeInfo extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        log.info ("User's entered to registration page with email and password");
+
         String password = request.getParameter("j_password");
         String email = request.getParameter("j_username");
     /**
     * pattern to check if enail is correct if it isn't user is redirected to error page
     */
         try {
-            if (!email.matches("^(?:\\w+[-.!#$%&'*+/=?^_`{|}~]*\\w+)@(?:\\w+[.!#$%&'*+/=?^_`{|}~-]*)\\.(?:\\w+[-]*)$"))
-                throw new WrongData();
-        } catch (WrongData w){
-            log.error("Incorrect email");
-            request.setAttribute(ERROR_NAME, "wrongemail");
-            request.getRequestDispatcher(ERROR_PATH).forward(request, response);
-        }
+            if (!email.matches("^(?:\\w+[-.!#$%&'*+/=?^_`{|}~]*\\w+)@(?:\\w+[.!#$%&'*+/=?^_`{|}~-]*)\\.(?:\\w+[-]*)$")) {
+                request.setAttribute(ERROR_NAME, "wrongemail");
+                throw new WrongData("Incorrect email");
+            }
+
         /**
          * if password contains less then 5 symbols send to error page
          */
-        try {
-            if (password.length() < 5)
-                throw new WrongData();
-        }catch(WrongData w){
-            log.error("User put too small password");
-            request.setAttribute(ERROR_NAME, "wrongpassword");
-            request.getRequestDispatcher(ERROR_PATH).forward(request, response);
-        }
+
+            if (password.length() < 5){
+                request.setAttribute(ERROR_NAME, "wrongpassword");
+                throw new WrongData("User put too small password");
+                }
         /**
          * if password 1 and password 2 are different user's redirected to error page
          */
-        try {
-            if (!password.trim().equals(request.getParameter("j_password2").trim()))
-                throw new WrongData();
-        }catch(WrongData w){
-            log.error("User's entered different passwords");
-            request.setAttribute(ERROR_NAME, "differentpassword");
-            request.getRequestDispatcher(ERROR_PATH).forward(request, response);
-        }
+               if (!password.trim().equals(request.getParameter("j_password2").trim())) {
+                   request.setAttribute(ERROR_NAME, "differentpassword");
+                   throw new WrongData("User's entered different passwords");
+               }
+
         /**
          * check if email is already in database user is redirected to error page
          */
 
-        try {
-            if (travellerDao.checkEmail(email.trim()))
-                throw new WrongData();
-        }catch(WrongData w){
-            log.error("User's added email which already exists");
-            request.setAttribute("error", "emailexist");
-            request.getRequestDispatcher("/WEB-INF/error/emailError.jsp").forward(request, response);
-        }
+            if (travellerDao.checkEmail(email.trim())) {
+                request.setAttribute(ERROR_NAME, "emailexist");
+                throw new WrongData("User's added email which already exists");
+            }
+
 
         /**
          * if all data is correct
          * encode password and add info to traveller, session and database
          */
+
         String hashPassword = password.trim().hashCode()*73+"adgjlnc";
         Traveller traveller = (Traveller) request.getSession().getAttribute(TRAVELLER);
         traveller.setEmail(email.trim());
@@ -100,6 +89,10 @@ public class SafeInfo extends HttpServlet {
         request.getSession().setAttribute(TRAVELLER, traveller);
 
         response.sendRedirect("/");
+        }catch(WrongData w){
+            log.error(w.getErrorMessage());
+            request.getRequestDispatcher("/WEB-INF/error/emailError.jsp").forward(request, response);
+        }
     }
 
     @Override

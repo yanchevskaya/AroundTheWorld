@@ -10,7 +10,6 @@
     <fmt:message bundle="${loc}" key="logout" var="logout" />
     <fmt:message bundle="${loc}" key="routes" var="entitle" />
     <fmt:message bundle="${loc}" key="profile" var="profile" />
-    <fmt:message bundle="${loc}" key="language" var="language" />
     <fmt:message bundle="${loc}" key="mainpage" var="main" />
     <fmt:message bundle="${loc}" key="description" var="description" />
     <fmt:message bundle="${loc}" key="author" var="author" />

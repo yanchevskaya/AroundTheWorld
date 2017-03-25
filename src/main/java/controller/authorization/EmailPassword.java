@@ -29,6 +29,7 @@ import static model.Traveller.TRAVELLER;
 @WebServlet("/registration/email")
 public class EmailPassword extends HttpServlet {
     private static final Logger log = LogManager.getLogger(EmailPassword.class);
+
     /**
      * path to error page
      */
@@ -41,7 +42,6 @@ public class EmailPassword extends HttpServlet {
     @SuppressWarnings("javadoc")
     @Override
       protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        log.info("User's enterd to registration page");
         String firstName = request.getParameter("first_name");
         String lastName = request.getParameter("last_name");
     /**
@@ -50,62 +50,64 @@ public class EmailPassword extends HttpServlet {
         try {
             if ((firstName.length() < 2)
                     || (lastName.length() < 2)) {
-                throw new WrongData();
+                request.setAttribute(ERROR_NAME, "wrongname");
+                throw new WrongData("User's entered wrong information");
             }
             Pattern pattern = Pattern.compile("\\d+");
             Matcher matcher = pattern.matcher(firstName);
             if (!matcher.find()) {
                 matcher = pattern.matcher(lastName);
                 if (matcher.find()) {
-                    throw new WrongData();
+                    request.setAttribute(ERROR_NAME, "wrongname");
+                    throw new WrongData("User's entered wrong information");
                 }
-            } else throw new WrongData();
-        } catch (WrongData w) {
-            log.error("User's entered wrong information");
-            request.setAttribute(ERROR_NAME, "wrongname");
-            request.getRequestDispatcher(ERROR_PATH).forward(request, response);
-        }
-        /**
-         * create new object of traveller and add information about user
-         */
-        Traveller traveller = new Traveller();
-        traveller.setFirstName(firstName);
-        traveller.setLastName(lastName);
-        /**
-         * check if date of birthday isn't correct send to Error page
-         * otherwise add to traveller
-         */
-        try {
+            } else {
+                request.setAttribute(ERROR_NAME, "wrongname");
+                throw new WrongData("User's entered wrong information");
+            }
+
+            /**
+             * check if date of birthday is correct
+             */
             int day = Integer.parseInt(request.getParameter("day"));
             int month = Integer.parseInt(request.getParameter("month"));
             int year = Integer.parseInt(request.getParameter("year"));
-            traveller.setDateOfBirth(LocalDate.of(year, month, day));
-        } catch (NumberFormatException e) {
-            log.error("Wrong data format");
-            request.setAttribute(ERROR_NAME, "wrongformat");
-            request.getRequestDispatcher(ERROR_PATH).forward(request, response);
-        }
-        /**
-         *check if user has'nt chosen gender - send to error page
-         * gender could be 0,1 or null
-         * otherwise put add information to traveller
-         */
-        try {
-            traveller.setGender(Gender.valueOf(Integer.parseInt
-                    (request.getParameter("gender"))).get());
-        } catch (NumberFormatException n) {
-            log.error("User hasn't chosen a gender");
-            request.setAttribute(ERROR_NAME, "wronggender");
-            request.getRequestDispatcher(ERROR_PATH).forward(request, response);
-        }
-        /**
-         * if all data correct send user to page for receiving email and password
-         * data of user add to session
-         */
-        System.out.println(traveller);
-        request.getSession().setAttribute(TRAVELLER, traveller);
-        request.getRequestDispatcher("/WEB-INF/registration/email.jsp").forward(request, response);
 
+            /**
+             *check if user has'nt chosen gender - send to error page
+             * gender could be 0,1 or null
+             * otherwise put add information to traveller
+             */
+            if (request.getParameter("gender") == null) {
+                request.setAttribute(ERROR_NAME, "wronggender");
+                throw new WrongData("User hasn't chosen gender");
+            } else {
+
+                /**
+                 * create new object of traveller and add information about user
+                 */
+                Traveller traveller = new Traveller();
+                traveller.setFirstName(firstName);
+                traveller.setLastName(lastName);
+                traveller.setDateOfBirth(LocalDate.of(year, month, day));
+                traveller.setGender(Gender.valueOf(Integer.parseInt
+                        (request.getParameter("gender"))).get());
+
+                /**
+                 * if data incorrect send user to error page
+                 * otherwise send user to page for receiving email and password
+                 * data of user add to session
+                 */
+                request.getSession().setAttribute(TRAVELLER, traveller);
+                request.getRequestDispatcher("/WEB-INF/registration/email.jsp").forward(request, response);
+            }
+        }catch (WrongData w) {
+        log.error(w.getErrorMessage());
+        request.getRequestDispatcher(ERROR_PATH).forward(request, response);
+        } catch (NumberFormatException e) {
+            log.error(e.getLocalizedMessage());
+            request.getRequestDispatcher(ERROR_PATH).forward(request, response);
+        }
     }
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -42,20 +42,16 @@ import static model.Traveller.TRAVELLER;
 
         @Override
         protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-           log.info("User's entered to authorization page");
             String email = request.getParameter("j_username");
             String hashPassword = request.getParameter("j_password").trim().hashCode()*73+"adgjlnc";
 
             Traveller authorizedTraveller = travellerDao.getIfExist(email, hashPassword);
 
             try {
-                if (authorizedTraveller==null)
-                    throw new WrongData();
-            } catch (WrongData w) {
-                log.error("User with these email and password aren't contained in DB");
-                request.setAttribute("error", "tryagain");
-                request.getRequestDispatcher("/WEB-INF/error/authorizationError.jsp").forward(request, response);
-            }
+                if (authorizedTraveller==null) {
+                    request.setAttribute("error", "tryagain");
+                    throw new WrongData("User with these email and password aren't contained in DB");
+                }
 
             /**
              * if user has information about current place in data base, set it into traveller parameter
@@ -67,6 +63,10 @@ import static model.Traveller.TRAVELLER;
             request.getSession().setAttribute(TRAVELLER, authorizedTraveller);
 
             response.sendRedirect("/");
+            } catch (WrongData w) {
+                log.error(w.getErrorMessage());
+                request.getRequestDispatcher("/WEB-INF/error/authorizationError.jsp").forward(request, response);
+            }
 
         }
 
