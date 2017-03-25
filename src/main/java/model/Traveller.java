@@ -2,6 +2,7 @@ package model;
 
 import lombok.*;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 @Data
@@ -15,7 +16,7 @@ import java.time.LocalDate;
  * @author Ali Yan
  * @version 1.0
  */
-public class Traveller {
+public class Traveller implements Serializable{
     /**
      * parameter for saving user in session
      */

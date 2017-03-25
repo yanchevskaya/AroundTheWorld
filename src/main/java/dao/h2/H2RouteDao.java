@@ -1,26 +1,33 @@
 package dao.h2;
 
 import dao.RouteDao;
-import lombok.SneakyThrows;
 import model.Route;
 import model.Traveller;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * DAO layer for database H2 for table Routes
+ * @author Ali Yan
+ * @version 1.0
+ */
 public class H2RouteDao implements RouteDao {
-    private DataSource dataSource;
-    public static final String SELECT_ALL_ROUTES =
+    private static final Logger log = LogManager.getLogger(H2RouteDao.class);
+    private static final String SELECT_ALL_ROUTES =
             "SELECT r.id AS route, name, traveller_id, description, first_name, last_name" +
                     " FROM Route r, Traveller t WHERE traveller_id = t.id";
+
+    private DataSource dataSource;
 
     public H2RouteDao(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-    @SneakyThrows
     @Override
     public int create(Route route) {
         try (Connection connection = dataSource.getConnection();
@@ -34,10 +41,11 @@ public class H2RouteDao implements RouteDao {
             preparedStatement.executeUpdate();
 
             try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-
                 if (generatedKeys.next())
                     route.setId(generatedKeys.getInt(1));
             }
+            }catch (SQLException s){
+            log.error (s.getStackTrace());
         }
         return route.getId();
     }
@@ -48,17 +56,16 @@ public class H2RouteDao implements RouteDao {
         String sql2 = "DELETE FROM Route WHERE id = " + id;
 
         try (Connection connection = dataSource.getConnection();
-             Statement statement = connection.createStatement();) {
+             Statement statement = connection.createStatement()) {
             statement.executeUpdate(sql1);
             statement.executeUpdate(sql2);
         } catch (SQLException s) {
-            //log
+            log.error(s.getStackTrace());
         }
 
 
     }
 
-    @SneakyThrows
     @Override
     public List<Route> getAll() {
         List<Route> routes = new ArrayList<>();
@@ -74,12 +81,12 @@ public class H2RouteDao implements RouteDao {
                                 resultSet.getString("first_name"),
                                 resultSet.getString("last_name")),
                         resultSet.getString("description")));
+        } catch (SQLException s) {
+            log.error(s.getStackTrace());
         }
-
         return routes;
     }
 
-    @SneakyThrows
     @Override
     public Route get(int id) {
         Route route = null;
@@ -95,12 +102,13 @@ public class H2RouteDao implements RouteDao {
                                 resultSet.getString("first_name"),
                                 resultSet.getString("last_name")),
                         resultSet.getString("description"));
-        }
+        } catch (SQLException s) {
+        log.error(s.getStackTrace());
+    }
 
         return route;
     }
 
-    @SneakyThrows
     @Override
     public List<Route> getAll(int id) {
         String sqlById = SELECT_ALL_ROUTES + " AND t.id = " + id;
@@ -119,7 +127,9 @@ public class H2RouteDao implements RouteDao {
                                 resultSet.getString("last_name")),
                         resultSet.getString("description")));
             }
-        }
+        } catch (SQLException s) {
+        log.error(s.getStackTrace());
+    }
 
         return routes;
 
@@ -134,7 +144,7 @@ public class H2RouteDao implements RouteDao {
              Statement statement = connection.createStatement();) {
             statement.executeUpdate(sql);
         } catch (SQLException s) {
-            //log
+            log.error(s.getStackTrace());
         }
     }
 }

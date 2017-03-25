@@ -1,6 +1,5 @@
 package controller.giveInfo;
 
-import controller.giveInfo.routes.TakeRouteList;
 import dao.CityDao;
 import dao.TravellerDao;
 import model.City;
@@ -15,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import static model.Traveller.TRAVELLER;
@@ -24,16 +22,13 @@ import static model.Traveller.TRAVELLER;
  * @author Ali Yan
  * @version 1.0
  */
+
 @WebServlet("/travellers")
 public class ListOfTravellers extends HttpServlet {
     private TravellerDao travellerDao;
     private CityDao cityDao;
-    private Traveller traveller;
     private TravellerCollection travellersList;
     private List<Traveller> travellers;
-    private List<Traveller> subTravellers;
-
-    private static String travellerName = "";
     /**
      * number of element which need to show on one page
      */
@@ -53,7 +48,7 @@ public class ListOfTravellers extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        traveller = (Traveller) request.getSession().getAttribute(TRAVELLER);
+        Traveller traveller = (Traveller) request.getSession().getAttribute(TRAVELLER);
         int id = traveller.getId();
 
         int pageStart = 0;
@@ -68,7 +63,7 @@ public class ListOfTravellers extends HttpServlet {
         if (request.getParameter("id") != null) {
 
             Traveller anyTraveller = travellerDao.getById(Integer.parseInt(request.getParameter("id")));
-            travellerName = anyTraveller.getFirstName() + " " + anyTraveller.getLastName();
+            String travellerName = anyTraveller.getFirstName() + " " + anyTraveller.getLastName();
 
             request.setAttribute("traveller", anyTraveller);
             request.setAttribute("travellerName", travellerName);
@@ -86,7 +81,7 @@ public class ListOfTravellers extends HttpServlet {
  */
             if (travellerNames.length > 1) {
                 travellers = travellerDao.getByName(travellerNames[0], travellerNames[1]);
-                travellersList = travellers (pageStart, TOTAL, travellers);
+                travellersList = takeTravellers (pageStart, TOTAL, travellers);
 
             } else {
                 List<Traveller> findNameTraveller = new ArrayList<>();
@@ -96,7 +91,7 @@ public class ListOfTravellers extends HttpServlet {
                     if (anyTraveller.getFirstName().equals(travellerNames[0]))
                         findNameTraveller.add(traveller);
                 }
-                travellersList = travellers (pageStart, TOTAL, findNameTraveller);
+                travellersList = takeTravellers (pageStart, TOTAL, findNameTraveller);
                              }
             request.setAttribute("travellers", travellersList);
             request.getRequestDispatcher("/WEB-INF/travellers/index.jsp").forward(request, response);
@@ -113,7 +108,7 @@ public class ListOfTravellers extends HttpServlet {
                 if (city != null)
                     anyTraveller.setCurrentCity(city);
             }
-            travellersList = travellers (pageStart, TOTAL, travellers);
+            travellersList = takeTravellers (TOTAL, pageStart, travellers);
 
             request.setAttribute("travellers", travellersList);
             request.getRequestDispatcher("/WEB-INF/travellers/index.jsp").forward(request, response);
@@ -121,7 +116,7 @@ public class ListOfTravellers extends HttpServlet {
         }
     }
 
-    private TravellerCollection travellers(int pageStart, int TOTAL, List<Traveller> traveller) {
+    private TravellerCollection takeTravellers(int TOTAL,int pageStart, List<Traveller> traveller) {
         int pageEnd;
         int count=0;
         if (pageStart!=0)

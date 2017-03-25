@@ -21,12 +21,11 @@ import java.util.List;
  * @version 1.0
  */
 @WebServlet("/routes")
-public class    ListOfRouts extends HttpServlet {
-    private static final Logger log = LogManager.getLogger(ListOfRouts.class);
+public class   ListOfRouts extends HttpServlet {
     private RouteCollection routeList;
     private RouteDao routeDao;
     private List<Route> routes;
-    private List<Route> subRoutes;
+   
     /**
      * number of element which need to show on one page
      */
@@ -55,7 +54,7 @@ public class    ListOfRouts extends HttpServlet {
 
             routes = routeDao.getAll();
             TakeRouteList t = new TakeRouteList();
-            routeList = t.routes(TOTAL, pageStart, routes);
+            routeList = t.takeRoutes(TOTAL, pageStart, routes);
 
             request.setAttribute("routes", routeList);
             request.getRequestDispatcher("/WEB-INF/routes/index.jsp").forward(request, response);

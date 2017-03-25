@@ -103,7 +103,6 @@ public class ListOfCountry extends HttpServlet{
         /**
          * get all countries from database divide it into some pieces
          */
-        log.info("User wants to receive information about countries");
         countries = countryDao.getAll();
         subCountries = countries.subList(pageStart,pageEnd);
         count = countries.size() % TOTAL != 0 ? countries.size()/TOTAL + 1 : countries.size()/TOTAL;

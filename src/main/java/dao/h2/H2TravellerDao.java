@@ -3,15 +3,21 @@ package dao.h2;
 import dao.TravellerDao;
 import lombok.SneakyThrows;
 import model.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import javax.annotation.Resource;
 import javax.sql.DataSource;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * DAO layer for database H2 for table Travellers
+ * @author Ali Yan
+ * @version 1.0
+ */
 public class H2TravellerDao implements TravellerDao {
+    private static final Logger log = LogManager.getLogger(H2RouteDao.class);
 
     private DataSource dataSource;
 
@@ -19,9 +25,7 @@ public class H2TravellerDao implements TravellerDao {
         this.dataSource = dataSource;
     }
 
-
     @Override
-    @SneakyThrows
     public int create(Traveller traveller) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(
@@ -47,28 +51,29 @@ public class H2TravellerDao implements TravellerDao {
                 if (generatedKeys.next())
                     traveller.setId(generatedKeys.getInt(1));
                 }
+        }catch (SQLException s){
+            log.error(s.getStackTrace());
         }
             return traveller.getId();
     }
-    /**
-     * search email
-     * @return true if email was found
-     */
+
     @Override
-    @SneakyThrows
-    public boolean checkEmail(String email) {
+       public boolean checkEmail(String email) {
+        boolean result = false;
         String sqlChange = "'" + email + "'";
         String selectEmail = "SELECT email FROM Traveller WHERE email = " + sqlChange;
 
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(selectEmail)) {
-            return resultSet.next();
-        }
+            result =  resultSet.next();
+        }catch (SQLException s){
+        log.error(s.getStackTrace());
+    }
+        return result;
     }
 
     @Override
-    @SneakyThrows
     public Traveller getIfExist(String email, String hashPassword) {
 
         String sqlEmail = "'"+email+"'";
@@ -89,40 +94,16 @@ public class H2TravellerDao implements TravellerDao {
                         resultSet.getString("last_name"),
                         resultSet.getDate("date_of_birth").toLocalDate());
             }
-        }
+        }catch (SQLException s){
+        log.error(s.getStackTrace());
+    }
         return traveller;
     }
 
-
     @Override
-    public void remove(Traveller traveller) {
-
-    }
-
-    @SneakyThrows
-    @Override
-    public List<Traveller> getSomeRecords(int start, int total, int id) {
-        List <Traveller> travellers = new ArrayList<>();
-        String sql = "SELECT id, first_name, last_name " +
-                "FROM Traveller WHERE id != "+id+ " LIMIT "+(start-1)+", "+total;
-
-        try (Connection connection = dataSource.getConnection();
-             Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(sql)) {
-            while (resultSet.next())
-                travellers.add(new Traveller(
-                        resultSet.getInt("id"),
-                        resultSet.getString("first_name"),
-                        resultSet.getString("last_name")));
-                }
-        return travellers;
-    }
-
-    @Override
-    @SneakyThrows
     public Traveller getById(int id) {
         String SELECT_TRAVELLER = "SELECT first_name, last_name, date_of_birth " +
-                "FROM Traveller WHERE id = "+id;
+                "FROM Traveller WHERE id = " + id;
         Traveller traveller = new Traveller();
 
         try (Connection connection = dataSource.getConnection();
@@ -132,15 +113,14 @@ public class H2TravellerDao implements TravellerDao {
                 traveller = new Traveller(id,
                         resultSet.getString("first_name"),
                         resultSet.getString("last_name"),
-                        resultSet.getDate("date_of_birth").toLocalDate());  }
-
+                        resultSet.getDate("date_of_birth").toLocalDate());
+        } catch (SQLException s) {
+            log.error(s.getStackTrace());
+        }
         return traveller;
     }
 
-
-
     @Override
-    @SneakyThrows
     public List <Traveller> getByName(String firstName, String lastName) {
         List <Traveller> travellers = new ArrayList<>();
         String SELECT_TRAVELLER = "SELECT id, first_name, last_name " +
@@ -154,13 +134,15 @@ public class H2TravellerDao implements TravellerDao {
                 travellers.add(new Traveller(
                         resultSet.getInt("id"),
                         resultSet.getString("first_name"),
-                        resultSet.getString("last_name")));  }
+                        resultSet.getString("last_name")));
+        } catch (SQLException s) {
+            log.error(s.getStackTrace());
+        }
 
         return travellers;
     }
 
     @Override
-    @SneakyThrows
     public List<Traveller> getAll(int id) {
         String sql = "SELECT t.id, first_name, last_name, gender_id, date_of_birth " +
                 "FROM Traveller t, Gender g " +
@@ -178,7 +160,9 @@ public class H2TravellerDao implements TravellerDao {
                         Gender.valueOf(resultSet.getInt("gender_id") - 1),
                         resultSet.getDate("date_of_birth").toLocalDate()));
             }
-        }
+        } catch (SQLException s) {
+        log.error(s.getStackTrace());
+    }
         return travellers;
     }
  }

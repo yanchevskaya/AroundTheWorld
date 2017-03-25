@@ -1,20 +1,26 @@
 package dao.h2;
 
 import dao.CountryDao;
-import lombok.SneakyThrows;
 import model.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
+/**
+ * DAO layer for database H2 for table City
+ * @author Ali Yan
+ * @version 1.0
+ */
 public class H2CountryDao implements CountryDao{
-
-    public static final String SELECT_ALL_SQL =
+    private static final Logger log = LogManager.getLogger(H2CityDao.class);
+    private static final String SELECT_ALL_SQL =
             "SELECT id, name FROM Country";
 
     private DataSource dataSource;
@@ -24,17 +30,6 @@ public class H2CountryDao implements CountryDao{
     }
 
     @Override
-    public String save() {
-        return null;
-    }
-
-    @Override
-    public void remove(Country country) {
-
-    }
-
-    @Override
-    @SneakyThrows
     public List<Country> getAll() {
         List <Country> countries = new ArrayList<>();
 
@@ -45,6 +40,8 @@ public class H2CountryDao implements CountryDao{
                 countries.add(new Country(
                         resultSet.getInt("id"),
                         resultSet.getString("name")));
+        } catch (SQLException s){
+            log.error(s.getStackTrace());
         }
 
         return countries;

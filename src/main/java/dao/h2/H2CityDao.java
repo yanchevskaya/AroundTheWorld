@@ -1,25 +1,32 @@
 package dao.h2;
 
 import dao.CityDao;
-import lombok.SneakyThrows;
 import model.City;
 import model.Country;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * DAO layer for database H2 for table City 
+ * @author Ali Yan
+ * @version 1.0
+ */
 public class H2CityDao implements CityDao{
-
+    private static final Logger log = LogManager.getLogger(H2CityDao.class);
     private DataSource dataSource;
 
     public H2CityDao(DataSource dataSource){
         this.dataSource = dataSource;
     }
 
-    @SneakyThrows
     @Override
     public City getCity (int id){
         City city = null;
@@ -37,23 +44,14 @@ public class H2CityDao implements CityDao{
                         new Country(
                                 resultSet.getInt("country_id"),
                                 resultSet.getString("country_name")));
+        }catch(SQLException s){
+            log.error(s.getStackTrace());
         }
 
         return city;
     }
 
     @Override
-    public String save() {
-        return null;
-    }
-
-    @Override
-    public void remove(City city) {
-
-    }
-
-    @Override
-    @SneakyThrows
     public List<City> getByCountryName(String name) {
         String sql = "SELECT c.id, c.name, country_id, co.id, co.name" +
                 " FROM City c, Country co WHERE country_id = co.id AND co.name = '"+name+"'";
@@ -68,14 +66,13 @@ public class H2CityDao implements CityDao{
                         resultSet.getInt("id"),
                         resultSet.getString("name"),
                         new Country(resultSet.getInt("id"),
-                                resultSet.getString ("name"))
-                ));
-        }
+                                resultSet.getString ("name"))));
 
+        }catch(SQLException s){
+        log.error(s.getMessage());
+    }
         return cities;
     }
-
-
 }
 
 

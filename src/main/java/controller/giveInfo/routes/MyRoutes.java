@@ -1,7 +1,6 @@
 package controller.giveInfo.routes;
 
 import dao.RouteDao;
-import model.City;
 import model.Route;
 import model.Traveller;
 import tags.bean.RouteCollection;
@@ -19,14 +18,9 @@ import static model.Traveller.TRAVELLER;
 
 @WebServlet("/myroutes")
 public class MyRoutes extends HttpServlet {
-    private Traveller traveller;
     private RouteDao routeDao;
-    private Route route;
     private RouteCollection routeList;
-    private RouteCollection subList;
-    private City city;
     private List<Route> routes;
-    private List<Route> shortList;
     private int TOTAL = 2;
 
     @Override
@@ -49,12 +43,12 @@ public class MyRoutes extends HttpServlet {
         if (page != null)
             pageStart = Integer.parseInt(page);
 
-            traveller = (Traveller) request.getSession().getAttribute(TRAVELLER);
+            Traveller traveller = (Traveller) request.getSession().getAttribute(TRAVELLER);
             int travId = traveller.getId();
             routes = routeDao.getAll(travId);
 
             TakeRouteList t = new TakeRouteList();
-            routeList = t.routes(2, pageStart, routes);
+            routeList = t.takeRoutes(TOTAL, pageStart, routes);
 
             request.setAttribute("routes", routeList);
             request.getRequestDispatcher("/WEB-INF/routes/userroutes.jsp").forward(request, response);
