@@ -80,6 +80,7 @@ CREATE TABLE Conversation (
   id INT AUTO_INCREMENT PRIMARY KEY,
   friend_id INT,
   message VARCHAR(1000) NOT NULL,
+  date DATETIME NOT NULL,
 
   FOREIGN KEY (friend_id) REFERENCES Friend(id)
 );

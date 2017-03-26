@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * if user isn't authorized he is redirected to jsp page for authorization
+ * when user press the button'log in' he is redirected to page for entering email and password
  * @author Ali Yan
  * @version 1.0
  */

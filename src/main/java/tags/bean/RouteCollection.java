@@ -2,7 +2,6 @@ package tags.bean;
 
 import model.Route;
 
-import java.io.Serializable;
 import java.util.Collection;
 
 /**
@@ -10,7 +9,7 @@ import java.util.Collection;
  * @author Ali Yan
  * @version 1.0
  */
-public class RouteCollection implements Serializable {
+public class RouteCollection {
         private Collection<Route> routes;
         private int amount;
 

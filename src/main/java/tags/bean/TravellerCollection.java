@@ -2,7 +2,6 @@ package tags.bean;
 
 import model.Traveller;
 
-import java.io.Serializable;
 import java.util.Collection;
 
 /**
@@ -10,7 +9,7 @@ import java.util.Collection;
  * @author Ali Yan
  * @version 1.0
  */
-public class TravellerCollection implements Serializable {
+public class TravellerCollection {
     private Collection<Traveller> travellers;
     private int amount;
 

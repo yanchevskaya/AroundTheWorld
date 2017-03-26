@@ -28,7 +28,7 @@ public class ListOfTravellers extends HttpServlet {
     private TravellerDao travellerDao;
     private CityDao cityDao;
     private TravellerCollection travellersList;
-    private List<Traveller> travellers;
+    private List<Traveller>  travellers;
     /**
      * number of element which need to show on one page
      */
@@ -51,17 +51,18 @@ public class ListOfTravellers extends HttpServlet {
         Traveller traveller = (Traveller) request.getSession().getAttribute(TRAVELLER);
         int id = traveller.getId();
 
+        /**
+         * get information about page from which user ask about information
+         */
         int pageStart = 0;
         String page = request.getParameter("page");
         if (page != null)
             pageStart = Integer.parseInt(page);
 
-
         /**
          *receive information about traveller and send user to traveller's profile page
          */
         if (request.getParameter("id") != null) {
-
             Traveller anyTraveller = travellerDao.getById(Integer.parseInt(request.getParameter("id")));
             String travellerName = anyTraveller.getFirstName() + " " + anyTraveller.getLastName();
 
@@ -76,12 +77,12 @@ public class ListOfTravellers extends HttpServlet {
         } else if (request.getParameter("traveller") != null) {
             String name = request.getParameter("traveller");
             String[] travellerNames = name.split("\\s");
-/**
- * if request has space, divide it and search using name and lastname
- */
+            /**
+            * if request has space, divide it and search using name and last name
+            */
             if (travellerNames.length > 1) {
                 travellers = travellerDao.getByName(travellerNames[0], travellerNames[1]);
-                travellersList = takeTravellers (pageStart, TOTAL, travellers);
+                travellersList = takeTravellers (pageStart, travellers);
 
             } else {
                 List<Traveller> findNameTraveller = new ArrayList<>();
@@ -91,16 +92,13 @@ public class ListOfTravellers extends HttpServlet {
                     if (anyTraveller.getFirstName().equals(travellerNames[0]))
                         findNameTraveller.add(traveller);
                 }
-                travellersList = takeTravellers (pageStart, TOTAL, findNameTraveller);
+                travellersList = takeTravellers (pageStart, findNameTraveller);
                              }
             request.setAttribute("travellers", travellersList);
-            request.getRequestDispatcher("/WEB-INF/travellers/index.jsp").forward(request, response);
-
         } else {
             /**
              * receive information about all travellers except user who wants to see the information
              */
-
             travellers = travellerDao.getAll(id);
 
             for (Traveller anyTraveller : travellers) {
@@ -108,15 +106,19 @@ public class ListOfTravellers extends HttpServlet {
                 if (city != null)
                     anyTraveller.setCurrentCity(city);
             }
-            travellersList = takeTravellers (TOTAL, pageStart, travellers);
-
+            travellersList = takeTravellers(pageStart, travellers);
+        }
             request.setAttribute("travellers", travellersList);
             request.getRequestDispatcher("/WEB-INF/travellers/index.jsp").forward(request, response);
-
-        }
     }
 
-    private TravellerCollection takeTravellers(int TOTAL,int pageStart, List<Traveller> traveller) {
+    /**
+     * reseive information about travellers for one required page
+     * @param pageStart - position in the list from what we need ro receive information
+     * @param traveller - list of travellers
+     * @return bean of Travellers to print it
+     */
+    private TravellerCollection takeTravellers(int pageStart, List<Traveller> traveller) {
         int pageEnd;
         int count=0;
         if (pageStart!=0)

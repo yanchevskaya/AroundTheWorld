@@ -9,6 +9,11 @@ import java.io.IOException;
 
 import static model.Traveller.TRAVELLER;
 
+/**
+ * welcome page with main information
+ * @author Ali Yan
+ * @version 1.0
+ */
 @WebServlet("/")
 public class WelcomePage extends HttpServlet {
     private Traveller traveller;

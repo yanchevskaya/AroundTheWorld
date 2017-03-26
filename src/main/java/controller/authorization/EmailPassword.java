@@ -91,7 +91,7 @@ public class EmailPassword extends HttpServlet {
                 traveller.setLastName(lastName);
                 traveller.setDateOfBirth(LocalDate.of(year, month, day));
                 traveller.setGender(Gender.valueOf(Integer.parseInt
-                        (request.getParameter("gender"))).get());
+                        (request.getParameter("gender"))));
 
                 /**
                  * if data incorrect send user to error page
