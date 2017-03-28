@@ -17,12 +17,15 @@ import java.io.IOException;
 
 import static model.Traveller.TRAVELLER;
 
+/**
+ * servlet for managing of routes (create, update, delete)
+ * @author Ali Yan
+ * @version 1.0
+ */
 @WebServlet("/myroutes/manage")
 public class ManageRoute extends HttpServlet {
-    private TravellerDao travellerDao;
     private RouteDao routeDao;
     private Route route;
-    private City city;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -35,7 +38,9 @@ public class ManageRoute extends HttpServlet {
         if ("create".equals(request.getParameter("manage"))) {
            request.getRequestDispatcher("/WEB-INF/routes/create.jsp").forward(request, response);//перенаправить обработку запроса другому ресурсу
         }
-
+        /**
+         * check if user press button change and update information in data base
+         */
         if (request.getParameter("change")!=null) {
            int id = Integer.parseInt(request.getParameter("change"));
             System.out.println("change id" + id);
@@ -44,7 +49,9 @@ public class ManageRoute extends HttpServlet {
            routeDao.update(name, description, id);
            response.sendRedirect("/myroutes");
             }
-
+        /**
+         * check if user wants to create new route receive information and add it to database
+         */
         if (request.getParameter("newroute")!=null){
 
             route = new Route();
@@ -60,6 +67,10 @@ public class ManageRoute extends HttpServlet {
             response.sendRedirect("/myroutes");
         }
 
+        /**
+         * check if user wants to delete information
+         * receive parameters and delete information from database
+         */
         if ("delete".equals(request.getParameter("manage"))) {
             int id = Integer.parseInt(request.getParameter("id"));
             routeDao.remove(id);

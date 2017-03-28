@@ -2,8 +2,6 @@ package controller.giveInfo.routes;
 
 import dao.RouteDao;
 import model.Route;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import tags.bean.RouteCollection;
 
 import javax.servlet.ServletConfig;
@@ -25,7 +23,6 @@ public class   ListOfRouts extends HttpServlet {
     private RouteCollection routeList;
     private RouteDao routeDao;
     private List<Route> routes;
-   
     /**
      * number of element which need to show on one page
      */
@@ -46,12 +43,17 @@ public class   ListOfRouts extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        /**
+         *chekc from which pages request
+         */
         String page = request.getParameter("page");
         int pageStart = 0;
         if (page != null)
             pageStart = Integer.parseInt(page);
 
+        /**
+         * get all information about routes
+         */
             routes = routeDao.getAll();
             TakeRouteList t = new TakeRouteList();
             routeList = t.takeRoutes(TOTAL, pageStart, routes);

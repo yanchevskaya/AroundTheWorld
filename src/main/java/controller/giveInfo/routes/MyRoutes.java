@@ -16,12 +16,20 @@ import java.util.List;
 
 import static model.Traveller.TRAVELLER;
 
+/**
+ * show information about user's routes
+ * @author Ali Yan
+ * @version 1.0
+ */
 @WebServlet("/myroutes")
 public class MyRoutes extends HttpServlet {
     private RouteDao routeDao;
     private RouteCollection routeList;
     private List<Route> routes;
-    private int TOTAL = 2;
+    /**
+     * number of element which need to show on one page
+     */
+    private static final int TOTAL = 2;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
@@ -30,6 +38,10 @@ public class MyRoutes extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        /**
+         * check if user wants to get the information about specifies route
+         * and redirect him for page with this information
+         */
         if (request.getParameter("id") != null) {
             int id = Integer.parseInt(request.getParameter("id"));
             Route route = routeDao.get(id);
@@ -37,18 +49,21 @@ public class MyRoutes extends HttpServlet {
             request.getRequestDispatcher("/WEB-INF/routes/update.jsp").forward(request, response);
         }
 
-
+        /**
+        *check from which pages request
+        */
         String page = request.getParameter("page");
         int pageStart = 0;
         if (page != null)
             pageStart = Integer.parseInt(page);
-
+        /**
+         * get all routes of user
+         */
             Traveller traveller = (Traveller) request.getSession().getAttribute(TRAVELLER);
             int travId = traveller.getId();
             routes = routeDao.getAll(travId);
 
-            TakeRouteList t = new TakeRouteList();
-            routeList = t.takeRoutes(TOTAL, pageStart, routes);
+            routeList = TakeRouteList.takeRoutes(TOTAL, pageStart, routes);
 
             request.setAttribute("routes", routeList);
             request.getRequestDispatcher("/WEB-INF/routes/userroutes.jsp").forward(request, response);

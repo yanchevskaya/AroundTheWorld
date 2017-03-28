@@ -49,23 +49,12 @@ public interface TravellerDao {
      */
     List<Traveller> getByName(String one, String two);
 
+    List<Traveller> getByName(String name);
+
     /**
      * chek if email already exists
      * @param email - email of user
      * @return tru if email exists in database, otherwise return false
      */
     boolean checkEmail(String email);
-
-    /**
-     * default method
-     * @param firstName - entered parameter by user. find full concurrences in firs tname
-     * @param id - id of user information of which doesn't need to receive
-     * @return optional with traveller
-     */
-    default Optional<Traveller> getByName(String firstName, int id){
-        return getAll(id).stream()
-                .filter(traveller -> traveller.getFirstName().equals(firstName))
-                .findAny();
-    }
-
 }

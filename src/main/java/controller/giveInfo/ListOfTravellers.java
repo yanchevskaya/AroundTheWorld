@@ -13,7 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.util.ArrayList;
 import java.util.List;
 
 import static model.Traveller.TRAVELLER;
@@ -22,13 +21,12 @@ import static model.Traveller.TRAVELLER;
  * @author Ali Yan
  * @version 1.0
  */
-
 @WebServlet("/travellers")
 public class ListOfTravellers extends HttpServlet {
     private TravellerDao travellerDao;
     private CityDao cityDao;
     private TravellerCollection travellersList;
-    private List<Traveller>  travellers;
+    private List<Traveller> travellers;
     /**
      * number of element which need to show on one page
      */
@@ -46,6 +44,7 @@ public class ListOfTravellers extends HttpServlet {
         doPost(request, response);
     }
 
+    @SuppressWarnings({"ControlFlowStatementWithoutBraces", "DanglingJavadoc"})
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Traveller traveller = (Traveller) request.getSession().getAttribute(TRAVELLER);
@@ -70,11 +69,11 @@ public class ListOfTravellers extends HttpServlet {
             request.setAttribute("travellerName", travellerName);
 
             request.getRequestDispatcher("WEB-INF/profile/traveller.jsp").forward(request, response);
-
-            /**
-             * find information about user by name
-             */
-        } else if (request.getParameter("traveller") != null) {
+        }
+        /**
+         * find information about travellers by name
+         */
+        if (request.getParameter("traveller") != null) {
             String name = request.getParameter("traveller");
             String[] travellerNames = name.split("\\s");
             /**
@@ -82,18 +81,11 @@ public class ListOfTravellers extends HttpServlet {
             */
             if (travellerNames.length > 1) {
                 travellers = travellerDao.getByName(travellerNames[0], travellerNames[1]);
-                travellersList = takeTravellers (pageStart, travellers);
-
+                travellersList = takeTravellers(pageStart, travellers);
             } else {
-                List<Traveller> findNameTraveller = new ArrayList<>();
-                travellers = travellerDao.getAll(id);
-
-                for (Traveller anyTraveller : travellers) {
-                    if (anyTraveller.getFirstName().equals(travellerNames[0]))
-                        findNameTraveller.add(traveller);
-                }
-                travellersList = takeTravellers (pageStart, findNameTraveller);
-                             }
+                travellers = travellerDao.getByName(travellerNames[0]);
+                travellersList = takeTravellers(pageStart, travellers);
+            }
             request.setAttribute("travellers", travellersList);
         } else {
             /**
@@ -113,7 +105,7 @@ public class ListOfTravellers extends HttpServlet {
     }
 
     /**
-     * reseive information about travellers for one required page
+     * receive information about travellers for one required page
      * @param pageStart - position in the list from what we need ro receive information
      * @param traveller - list of travellers
      * @return bean of Travellers to print it
@@ -125,16 +117,16 @@ public class ListOfTravellers extends HttpServlet {
             pageStart = (pageStart - 1) * TOTAL;
         pageEnd = pageStart + TOTAL;
 
-        if (traveller == null) {
-            TravellerCollection t = new TravellerCollection(traveller, count);
-        }
+        if (traveller == null)
+            //noinspection ConstantConditions
+            return new TravellerCollection(traveller, count);
+
         if (traveller.size() < pageEnd)
             pageEnd = traveller.size();
         List <Traveller> shortList = traveller.subList(pageStart, pageEnd);
         count = traveller.size() % TOTAL != 0 ? traveller.size() / TOTAL + 1 : traveller.size() / TOTAL;
-        TravellerCollection t = new TravellerCollection(shortList, count);
 
-        return t;
+        return new TravellerCollection(shortList, count);
     }
     }
 

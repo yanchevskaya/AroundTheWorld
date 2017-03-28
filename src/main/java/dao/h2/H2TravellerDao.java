@@ -121,11 +121,33 @@ public class H2TravellerDao implements TravellerDao {
     }
 
     @Override
+    public List <Traveller> getByName(String name) {
+        List <Traveller> travellers = new ArrayList<>();
+        String SELECT_TRAVELLER = "SELECT id, first_name, last_name " +
+                "FROM Traveller WHERE first_name LIKE '%"+name+"%' OR last_name LIKE '%"+name+"%' "; 
+
+
+        try (Connection connection = dataSource.getConnection();
+             Statement statement = connection.createStatement();
+             ResultSet resultSet = statement.executeQuery(SELECT_TRAVELLER)) {
+            while (resultSet.next())
+                travellers.add(new Traveller(
+                        resultSet.getInt("id"),
+                        resultSet.getString("first_name"),
+                        resultSet.getString("last_name")));
+        } catch (SQLException s) {
+            log.error(s.getStackTrace());
+        }
+
+        return travellers;
+    }
+
+    @Override
     public List <Traveller> getByName(String firstName, String lastName) {
         List <Traveller> travellers = new ArrayList<>();
         String SELECT_TRAVELLER = "SELECT id, first_name, last_name " +
                 "FROM Traveller WHERE first_name LIKE '%"+firstName+"%' AND last_name LIKE '%"+lastName+"%' " +
-                "OR first_name LIKE '%"+lastName +"%' OR last_name LIKE '%"+firstName+"%'";
+                "OR first_name LIKE '%"+lastName +"%' AND last_name LIKE '%"+firstName+"%'";
 
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement();

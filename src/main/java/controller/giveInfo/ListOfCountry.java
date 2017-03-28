@@ -1,7 +1,5 @@
 package controller.giveInfo;
 
-
-import controller.authorization.Authorization;
 import dao.CityDao;
 import dao.CountryDao;
 import model.City;
@@ -21,7 +19,7 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * show information about contries to user
+ * show information about countries to user
  * @author Ali Yan
  * @version 1.0
  */
@@ -79,7 +77,6 @@ public class ListOfCountry extends HttpServlet{
          * show information about city
          */
         if (request.getParameter("country") != null) {
-            log.info("user wants to receive information about city");
             String countryName = request.getParameter("country");
         /**
         * receive information about city from database

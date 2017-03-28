@@ -2,32 +2,43 @@ package controller.giveInfo.routes;
 
 import model.Route;
 import tags.bean.RouteCollection;
-import tags.bean.TravellerCollection;
 
 import java.util.List;
 
-public class TakeRouteList {
-    RouteCollection r;
-    TravellerCollection t;
+/**
+ * class for receiving information about routes for required page
+ * @author Ali Yan
+ * @version 1.0
+ */
+class TakeRouteList {
 
-
-    RouteCollection takeRoutes(int TOTAL, int pageStart, List<Route> route) {
+    /**
+     *
+     * @param total - number of things to print
+     * @param pageStart - from which element to print the information
+     * @param route -list of routes
+     * @return bean of routes
+     */
+    @SuppressWarnings("ConstantConditions")
+    static RouteCollection takeRoutes(int total, int pageStart, List<Route> route) {
         int pageEnd;
         int count=0;
-        if (pageStart!=0)
-        pageStart = (pageStart - 1) * TOTAL;
-        pageEnd = pageStart + TOTAL;
 
-        if (route == null) {
-             r = new RouteCollection(route, count);
-        }
+        if (pageStart!=0)
+        pageStart = (pageStart - 1) * total;
+
+        pageEnd = pageStart + total;
+
+        if (route == null)
+             return new RouteCollection(route, count);
+
         if (route.size() < pageEnd)
             pageEnd = route.size();
-            List <Route> shortList = route.subList(pageStart, pageEnd);
-            count = route.size() % TOTAL != 0 ? route.size() / TOTAL + 1 : route.size() / TOTAL;
-            r = new RouteCollection(shortList, count);
 
-        return r;
+            List<Route> shortList = route.subList(pageStart, pageEnd);
+            count = route.size() % total != 0 ? route.size() / total + 1 : route.size() / total;
+
+        return new RouteCollection(shortList, count);
     }
 
 
