@@ -1,5 +1,8 @@
 package controller.authorization;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,12 +20,16 @@ import static model.Traveller.TRAVELLER;
  */
 @WebServlet("/logout")
 public class LogOut extends HttpServlet{
+    private static final Logger log = LogManager.getLogger(LogOut.class);
 
         @Override
         protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
+           log.debug("Remove information about user id=" +request.getSession().getId()+
+                            "from Session");
            request.getSession().removeAttribute(TRAVELLER);
            request.getSession().invalidate();
+           log.debug("Invalidate session");
 
             response.sendRedirect("/");
         }

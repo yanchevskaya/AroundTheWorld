@@ -27,13 +27,11 @@ import java.util.List;
 public class ListOfCountry extends HttpServlet{
     private static final Logger log = LogManager.getLogger(ListOfCountry.class);
     private CountryCollection countryList;
-    private CityCollection cityList;
     private CountryDao countryDao;
     private CityDao cityDao;
     private List<Country> countries;
     private List<Country> subCountries;
-    private List<City>cities;
-    private List<City>subCities;
+
     /**
      * number of element which need to show on one page
      */
@@ -81,16 +79,17 @@ public class ListOfCountry extends HttpServlet{
         /**
         * receive information about city from database
         */
-            cities = cityDao.getByCountryName(countryName);
-        /**
+            List<City>cities = cityDao.getByCountryName(countryName);
+
+            /**
         * divide city into some pieces to show on different pages
         */
-            subCities = cities.subList(pageStart,pageEnd);
+            List<City>subCities = cities.subList(pageStart,pageEnd);
         /**
         * receive amount of pages
         */
             count = cities.size() % TOTAL != 0 ? cities.size()/TOTAL + 1 : cities.size()/TOTAL;
-            cityList = new CityCollection(subCities, count, countryName);
+            CityCollection cityList = new CityCollection(subCities, count, countryName);
 
             request.setAttribute("cities", cityList);
             request.setAttribute("country", countryName);

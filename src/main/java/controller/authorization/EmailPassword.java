@@ -21,36 +21,37 @@ import static model.Traveller.TRAVELLER;
 /**
  * if user has entered incorrect data throw exception which
  * is caught and user is redirected to error page
- * if data is right all entered parameters add to user and safe in sesion
+ * if data is right all entered parameters add to user and safe in session
  * then user is redirected to jsp to enter email and password
  * @author Ali Yan
  * @version 1.0
  */
+@SuppressWarnings("DanglingJavadoc")
 @WebServlet("/registration/email")
 public class EmailPassword extends HttpServlet {
     private static final Logger log = LogManager.getLogger(EmailPassword.class);
-
     /**
      * path to error page
      */
     private static final String ERROR_PATH = "/WEB-INF/error/dataError.jsp";
     /**
-     * name of error for error page
+     * name of parameter for error page
      */
-    private static final String ERROR_NAME = "error";
+    private static final String ERROR = "error";
 
-    @SuppressWarnings("javadoc")
+
     @Override
       protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String firstName = request.getParameter("first_name");
         String lastName = request.getParameter("last_name");
+        log.debug("Get information about user -  "+firstName+" "+ lastName);
     /**
      * check if first name and last name are correct and don't contain any numbers
      */
         try {
             if ((firstName.length() < 2)
                     || (lastName.length() < 2)) {
-                request.setAttribute(ERROR_NAME, "wrongname");
+                request.setAttribute(ERROR, "wrong.name");
                 throw new WrongData("User's entered wrong information");
             }
             Pattern pattern = Pattern.compile("\\d+");
@@ -58,17 +59,18 @@ public class EmailPassword extends HttpServlet {
             if (!matcher.find()) {
                 matcher = pattern.matcher(lastName);
                 if (matcher.find()) {
-                    request.setAttribute(ERROR_NAME, "wrongname");
+                    request.setAttribute(ERROR, "wrong.name");
                     throw new WrongData("User's entered wrong information");
                 }
             } else {
-                request.setAttribute(ERROR_NAME, "wrongname");
+                request.setAttribute(ERROR, "wrong.name");
                 throw new WrongData("User's entered wrong information");
             }
 
             /**
              * check if date of birthday is correct
              */
+            log.debug("Trying to check information about date");
             int day = Integer.parseInt(request.getParameter("day"));
             int month = Integer.parseInt(request.getParameter("month"));
             int year = Integer.parseInt(request.getParameter("year"));
@@ -78,34 +80,37 @@ public class EmailPassword extends HttpServlet {
              * gender could be 0,1 or null
              * otherwise put add information to traveller
              */
+            log.debug("Trying to check information about gender");
             if (request.getParameter("gender") == null) {
-                request.setAttribute(ERROR_NAME, "wronggender");
+                request.setAttribute(ERROR, "wrong.gender");
                 throw new WrongData("User hasn't chosen gender");
             } else {
-
                 /**
                  * create new object of traveller and add information about user
                  */
+                log.debug("Create object Traveller");
                 Traveller traveller = new Traveller();
                 traveller.setFirstName(firstName);
                 traveller.setLastName(lastName);
                 traveller.setDateOfBirth(LocalDate.of(year, month, day));
                 traveller.setGender(Gender.valueOf(Integer.parseInt
                         (request.getParameter("gender"))));
-
                 /**
                  * if data incorrect send user to error page
                  * otherwise send user to page for receiving email and password
                  * data of user add to session
                  */
                 request.getSession().setAttribute(TRAVELLER, traveller);
+                log.debug("Put information about "+ traveller.getFirstName() + " "+
+                traveller.getLastName() +" into SESSION");
                 request.getRequestDispatcher("/WEB-INF/registration/email.jsp").forward(request, response);
             }
         }catch (WrongData w) {
-        log.error(w.getErrorMessage());
+        log.info(w.getErrorMessage());
         request.getRequestDispatcher(ERROR_PATH).forward(request, response);
         } catch (NumberFormatException e) {
-            log.error(e.getLocalizedMessage());
+            request.setAttribute(ERROR, "wrong.format");
+            log.info(e.toString());
             request.getRequestDispatcher(ERROR_PATH).forward(request, response);
         }
     }

@@ -27,47 +27,49 @@ import static model.Traveller.TRAVELLER;
  * @author Ali Yan
  * @version 1.0
  */
+     @SuppressWarnings("DanglingJavadoc")
      @WebServlet("/entrance/authorization")
     public class Authorization extends HttpServlet {
-        private TravellerDao travellerDao;
-        private CityDao cityDao;
+        private transient TravellerDao travellerDao;
+        private transient CityDao cityDao;
         private static final Logger log = LogManager.getLogger(Authorization.class);
 
         @Override
         public void init(ServletConfig config) throws ServletException {
             travellerDao = (TravellerDao) config.getServletContext().getAttribute("TravellerDao");
             cityDao = (CityDao) config.getServletContext().getAttribute("CityDao");
-
         }
 
         @Override
         protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
             String email = request.getParameter("j_username");
+            @SuppressWarnings("SpellCheckingInspection")
             String hashPassword = request.getParameter("j_password").trim().hashCode()*73+"adgjlnc";
 
             Traveller authorizedTraveller = travellerDao.getIfExist(email, hashPassword);
-
+            log.debug("Check information about authorization for email - " +email);
             try {
                 if (authorizedTraveller==null) {
-                    request.setAttribute("error", "tryagain");
+                    request.setAttribute("error", "try.again");
                     throw new WrongData("User with these email and password aren't contained in DB");
                 }
-
             /**
              * if user has information about current place in data base, set it into traveller parameter
              */
             City city = cityDao.getCity(authorizedTraveller.getId());
+            log.debug("Check information about user's city");
             if (city!=null)
                 authorizedTraveller.setCurrentCity(city);
 
             request.getSession().setAttribute(TRAVELLER, authorizedTraveller);
+            log.debug("Set attribute to session about user with id =" +authorizedTraveller.getId());
 
             response.sendRedirect("/");
+
             } catch (WrongData w) {
-                log.error(w.getErrorMessage());
+                log.info(w.getErrorMessage());
                 request.getRequestDispatcher("/WEB-INF/error/authorizationError.jsp").forward(request, response);
             }
-
         }
 
         @Override
