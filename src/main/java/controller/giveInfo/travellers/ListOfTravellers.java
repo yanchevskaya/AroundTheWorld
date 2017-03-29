@@ -1,9 +1,11 @@
-package controller.giveInfo;
+package controller.giveInfo.travellers;
 
 import dao.CityDao;
 import dao.TravellerDao;
 import model.City;
 import model.Traveller;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import tags.bean.TravellerCollection;
 
 import javax.servlet.ServletConfig;
@@ -23,10 +25,10 @@ import static model.Traveller.TRAVELLER;
  */
 @WebServlet("/travellers")
 public class ListOfTravellers extends HttpServlet {
+    private static final Logger log = LogManager.getLogger(ListOfTravellers.class);
     private TravellerDao travellerDao;
     private CityDao cityDao;
-    private TravellerCollection travellersList;
-    private List<Traveller> travellers;
+
     /**
      * number of element which need to show on one page
      */
@@ -49,12 +51,14 @@ public class ListOfTravellers extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Traveller traveller = (Traveller) request.getSession().getAttribute(TRAVELLER);
         int id = traveller.getId();
+        log.debug("Get information about user's id =" + id);
 
         /**
          * get information about page from which user ask about information
          */
         int pageStart = 0;
         String page = request.getParameter("page");
+        log.debug("Request from page=" + page);
         if (page != null)
             pageStart = Integer.parseInt(page);
 
@@ -62,71 +66,38 @@ public class ListOfTravellers extends HttpServlet {
          *receive information about traveller and send user to traveller's profile page
          */
         if (request.getParameter("id") != null) {
+            log.debug("Get information about traveller id=" + id);
             Traveller anyTraveller = travellerDao.getById(Integer.parseInt(request.getParameter("id")));
             String travellerName = anyTraveller.getFirstName() + " " + anyTraveller.getLastName();
 
+            log.debug("Set attribute - traveller and traveller name " + travellerName);
             request.setAttribute("traveller", anyTraveller);
             request.setAttribute("travellerName", travellerName);
 
+            log.debug("Redirect to profile/traveller.jsp");
             request.getRequestDispatcher("WEB-INF/profile/traveller.jsp").forward(request, response);
-        }
-        /**
-         * find information about travellers by name
-         */
-        if (request.getParameter("traveller") != null) {
-            String name = request.getParameter("traveller");
-            String[] travellerNames = name.split("\\s");
-            /**
-            * if request has space, divide it and search using name and last name
-            */
-            if (travellerNames.length > 1) {
-                travellers = travellerDao.getByName(travellerNames[0], travellerNames[1]);
-                travellersList = takeTravellers(pageStart, travellers);
-            } else {
-                travellers = travellerDao.getByName(travellerNames[0]);
-                travellersList = takeTravellers(pageStart, travellers);
-            }
-            request.setAttribute("travellers", travellersList);
+
         } else {
             /**
              * receive information about all travellers except user who wants to see the information
              */
-            travellers = travellerDao.getAll(id);
+            log.debug("Get information about all travellers");
+            List<Traveller> travellers = travellerDao.getAll(id);
 
             for (Traveller anyTraveller : travellers) {
+                log.debug("get information about traveller's city");
                 City city = cityDao.getCity(anyTraveller.getId());
                 if (city != null)
                     anyTraveller.setCurrentCity(city);
             }
-            travellersList = takeTravellers(pageStart, travellers);
-        }
+            log.debug("Get info about sublist of travellers");
+            TakeTravellerList t = new TakeTravellerList();
+            TravellerCollection travellersList = t.takeTravellers(TOTAL, pageStart, travellers);
+
             request.setAttribute("travellers", travellersList);
+            log.debug("Redirect to travellers/index.jsp");
             request.getRequestDispatcher("/WEB-INF/travellers/index.jsp").forward(request, response);
+        }
     }
-
-    /**
-     * receive information about travellers for one required page
-     * @param pageStart - position in the list from what we need ro receive information
-     * @param traveller - list of travellers
-     * @return bean of Travellers to print it
-     */
-    private TravellerCollection takeTravellers(int pageStart, List<Traveller> traveller) {
-        int pageEnd;
-        int count=0;
-        if (pageStart!=0)
-            pageStart = (pageStart - 1) * TOTAL;
-        pageEnd = pageStart + TOTAL;
-
-        if (traveller == null)
-            //noinspection ConstantConditions
-            return new TravellerCollection(traveller, count);
-
-        if (traveller.size() < pageEnd)
-            pageEnd = traveller.size();
-        List <Traveller> shortList = traveller.subList(pageStart, pageEnd);
-        count = traveller.size() % TOTAL != 0 ? traveller.size() / TOTAL + 1 : traveller.size() / TOTAL;
-
-        return new TravellerCollection(shortList, count);
-    }
-    }
+}
 

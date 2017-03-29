@@ -11,7 +11,7 @@
     <fmt:message bundle="${loc}" key="password" var="password" />
     <fmt:message bundle="${loc}" key="email" var="email" />
     <fmt:message bundle="${loc}" key="enterpassword" var="enter_password" />
-    <fmt:message bundle="${loc}" key="passwordconfirmation" var="confirm_password" />
+    <fmt:message bundle="${loc}" key="password.confirmation" var="confirm_password" />
     <fmt:message bundle="${loc}" key="mainpage" var="main" />
 
     <title>${registration}</title>

@@ -28,9 +28,10 @@ public class LogOut extends HttpServlet{
            log.debug("Remove information about user id=" +request.getSession().getId()+
                             "from Session");
            request.getSession().removeAttribute(TRAVELLER);
-           request.getSession().invalidate();
            log.debug("Invalidate session");
+           request.getSession().invalidate();
 
+            log.debug("Redirect user to main page");
             response.sendRedirect("/");
         }
 

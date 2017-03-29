@@ -20,7 +20,7 @@ class TakeRouteList {
      * @return bean of routes
      */
     @SuppressWarnings("ConstantConditions")
-    static RouteCollection takeRoutes(int total, int pageStart, List<Route> route) {
+     RouteCollection takeRoutes(int total, int pageStart, List<Route> route) {
         int pageEnd;
         int count=0;
 

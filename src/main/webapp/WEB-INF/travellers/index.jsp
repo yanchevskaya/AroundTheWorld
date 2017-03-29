@@ -20,7 +20,7 @@
 <a href = "profile"> ${profile}</a> &nbsp&nbsp <a href = "/"> ${main}</a>  &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
 <a href = "logout"> ${logout}</a><br/><br/>
 
-<form action="/travellers" method="post">
+<form action="/travellers/find" method="post">
     <input name = "traveller" value=""/>
     <input type="submit" value="Find"/><br/>
 </form>

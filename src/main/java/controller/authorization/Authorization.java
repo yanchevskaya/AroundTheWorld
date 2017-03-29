@@ -64,6 +64,7 @@ import static model.Traveller.TRAVELLER;
             request.getSession().setAttribute(TRAVELLER, authorizedTraveller);
             log.debug("Set attribute to session about user with id =" +authorizedTraveller.getId());
 
+            log.debug("Redirect user to main page");
             response.sendRedirect("/");
 
             } catch (WrongData w) {

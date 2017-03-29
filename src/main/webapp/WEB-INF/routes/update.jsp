@@ -27,9 +27,10 @@
 <form action="/myroutes/manage" method="post">
     <input type="hidden" name = "change" value="${route.id}">
     ${call} <input name = "name" value="${route.name}"/>
-    ${description}<input name = "routedescription" value="${route.description}"/>
+    ${description}<input name = "route.description" value="${route.description}"/>
     <input type="submit" value="${change}"/><br/>
 </form>
+
 <form action="/myroutes" method="post">
     <input type="submit" value="${cancel}"/><br/>
 </form>

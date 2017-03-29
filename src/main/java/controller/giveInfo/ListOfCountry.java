@@ -1,12 +1,11 @@
 package controller.giveInfo;
 
-import dao.CityDao;
 import dao.CountryDao;
-import model.City;
+
 import model.Country;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import tags.bean.CityCollection;
+
 import tags.bean.CountryCollection;
 
 import javax.servlet.ServletConfig;
@@ -26,12 +25,7 @@ import java.util.List;
 @WebServlet("/countries")
 public class ListOfCountry extends HttpServlet{
     private static final Logger log = LogManager.getLogger(ListOfCountry.class);
-    private CountryCollection countryList;
     private CountryDao countryDao;
-    private CityDao cityDao;
-    private List<Country> countries;
-    private List<Country> subCountries;
-
     /**
      * number of element which need to show on one page
      */
@@ -43,7 +37,6 @@ public class ListOfCountry extends HttpServlet{
     @Override
     public void init(ServletConfig config) throws ServletException {
         countryDao = (CountryDao) config.getServletContext().getAttribute("CountryDao");
-        cityDao = (CityDao) config.getServletContext().getAttribute("CityDao");
     }
 
     @Override
@@ -51,12 +44,13 @@ public class ListOfCountry extends HttpServlet{
         doPost(request, response);
     }
 
+    @SuppressWarnings("DanglingJavadoc")
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         /**
          * divide all information into some pages
          */
-        int count = 0;
+        int count;
         /**
          * from which element show information
          */
@@ -66,45 +60,26 @@ public class ListOfCountry extends HttpServlet{
          */
         int pageEnd = 2;
         String page = request.getParameter("page");
+        log.debug("Request from page "+page);
         if (page != null) {
             pageStart = Integer.parseInt(page);
             pageStart = (pageStart - 1) * TOTAL;
             pageEnd = pageStart+TOTAL;
         }
-        /**
-         * show information about city
-         */
-        if (request.getParameter("country") != null) {
-            String countryName = request.getParameter("country");
-        /**
-        * receive information about city from database
-        */
-            List<City>cities = cityDao.getByCountryName(countryName);
-
-            /**
-        * divide city into some pieces to show on different pages
-        */
-            List<City>subCities = cities.subList(pageStart,pageEnd);
-        /**
-        * receive amount of pages
-        */
-            count = cities.size() % TOTAL != 0 ? cities.size()/TOTAL + 1 : cities.size()/TOTAL;
-            CityCollection cityList = new CityCollection(subCities, count, countryName);
-
-            request.setAttribute("cities", cityList);
-            request.setAttribute("country", countryName);
-            request.getRequestDispatcher("/WEB-INF/countries/city.jsp").forward(request, response);
-        }
 
         /**
          * get all countries from database divide it into some pieces
          */
-        countries = countryDao.getAll();
-        subCountries = countries.subList(pageStart,pageEnd);
+        log.debug("Get information about countries");
+        List<Country> countries = countryDao.getAll();
+        log.debug("Divide information for needed part");
+        List<Country> subCountries = countries.subList(pageStart,pageEnd);
         count = countries.size() % TOTAL != 0 ? countries.size()/TOTAL + 1 : countries.size()/TOTAL;
-        countryList = new CountryCollection(subCountries, count);
+        CountryCollection countryList = new CountryCollection(subCountries, count);
 
+        log.debug("Set attribute to request - list of country");
         request.setAttribute("countries", countryList);
+        log.debug("Redirect to countries/index.jsp");
         request.getRequestDispatcher("/WEB-INF/countries/index.jsp").forward(request, response);
     }
 }

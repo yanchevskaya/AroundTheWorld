@@ -32,7 +32,7 @@ public void setCountryList(CountryCollection countryList) {
 
             for (Country country : listOfCountries) {
 
-                out.write("<tr><td><a href = \"countries?country=" + country.getName() + "\">" +
+                out.write("<tr><td><a href = \"cities?country=" + country.getName() + "\">" +
                         country.getName() + "</br></a></td></tr>");
             }
 
