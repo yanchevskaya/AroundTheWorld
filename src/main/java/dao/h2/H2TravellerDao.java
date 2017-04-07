@@ -1,7 +1,7 @@
 package dao.h2;
 
 import dao.TravellerDao;
-import lombok.SneakyThrows;
+
 import model.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,6 +13,7 @@ import java.util.List;
 
 /**
  * DAO layer for database H2 for table Travellers
+ * @see dao.TravellerDao
  * @author Ali Yan
  * @version 1.0
  */
@@ -52,7 +53,7 @@ public class H2TravellerDao implements TravellerDao {
                     traveller.setId(generatedKeys.getInt(1));
                 }
         }catch (SQLException s){
-            log.error(s.getStackTrace());
+            log.error(s.toString());
         }
             return traveller.getId();
     }
@@ -60,15 +61,15 @@ public class H2TravellerDao implements TravellerDao {
     @Override
        public boolean checkEmail(String email) {
         boolean result = false;
-        String sqlChange = "'" + email + "'";
-        String selectEmail = "SELECT email FROM Traveller WHERE email = " + sqlChange;
+        String emailChar = "'" + email + "'";
+        String selectEmail = "SELECT email FROM Traveller WHERE email = " + emailChar;
 
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(selectEmail)) {
             result =  resultSet.next();
         }catch (SQLException s){
-        log.error(s.getStackTrace());
+        log.error(s.toString());
     }
         return result;
     }
@@ -115,7 +116,7 @@ public class H2TravellerDao implements TravellerDao {
                         resultSet.getString("last_name"),
                         resultSet.getDate("date_of_birth").toLocalDate());
         } catch (SQLException s) {
-            log.error(s.getStackTrace());
+            log.error(s.toString());
         }
         return traveller;
     }
@@ -126,7 +127,6 @@ public class H2TravellerDao implements TravellerDao {
         String SELECT_TRAVELLER = "SELECT id, first_name, last_name " +
                 "FROM Traveller WHERE first_name LIKE '%"+name+"%' OR last_name LIKE '%"+name+"%' "; 
 
-
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement();
              ResultSet resultSet = statement.executeQuery(SELECT_TRAVELLER)) {
@@ -136,9 +136,8 @@ public class H2TravellerDao implements TravellerDao {
                         resultSet.getString("first_name"),
                         resultSet.getString("last_name")));
         } catch (SQLException s) {
-            log.error(s.getStackTrace());
+            log.error(s.toString());
         }
-
         return travellers;
     }
 
@@ -158,9 +157,8 @@ public class H2TravellerDao implements TravellerDao {
                         resultSet.getString("first_name"),
                         resultSet.getString("last_name")));
         } catch (SQLException s) {
-            log.error(s.getStackTrace());
+            log.error(s.toString());
         }
-
         return travellers;
     }
 
@@ -183,7 +181,7 @@ public class H2TravellerDao implements TravellerDao {
                         resultSet.getDate("date_of_birth").toLocalDate()));
             }
         } catch (SQLException s) {
-        log.error(s.getStackTrace());
+        log.error(s.toString());
     }
         return travellers;
     }

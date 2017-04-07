@@ -1,6 +1,5 @@
 package tags;
 
-import controller.authorization.Authorization;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import tags.bean.TravellerCollection;
@@ -16,42 +15,43 @@ import java.util.Collection;
  * @author Ali Yan
  * @version 1.0
  */
+@SuppressWarnings("DanglingJavadoc")
 public class TravellersTag extends TagSupport {
-    private static final Logger log = LogManager.getLogger(Authorization.class);
+    private static final Logger log = LogManager.getLogger(TravellersTag.class);
     private TravellerCollection travellersList;
-@SuppressWarnings("unused")
+
+    @SuppressWarnings("unused")
     public void setTravellersList(TravellerCollection travellersList) {
         this.travellersList = travellersList;
     }
 
     @Override
-    @SuppressWarnings("all")
     public int doStartTag() throws JspException {
         Collection<Traveller> listOfTravellers = travellersList.getTravellers();
         JspWriter out = pageContext.getOut();
         try {
         for (Traveller traveller : listOfTravellers) {
             if (traveller.getCurrentCity() == null)
-                out.write("<tr><td><a href = \"travellers?id=" + traveller.getId() + "\">" +
+                out.write("<tr><td><a href = \"\\travellers?id=" + traveller.getId() + "\">" +
                         traveller.getFirstName() + " " + traveller.getLastName() + "</br></a></td><td></td></tr>");
             else
-                out.write("<tr><td><a href = \"travellers?id=" + traveller.getId() + "\">" +
+                out.write("<tr><td><a href = \"\\travellers?id=" + traveller.getId() + "\">" +
                         traveller.getFirstName() + " " + traveller.getLastName() + "</a> </td><td>" + traveller.getCurrentCity().toString() + "</td><br/>");
         }
             out.write("</table>");
                 /**
                  * print links for pages if it needs
                  */
-            for (int i = 1; i <= travellersList.getAmount(); i++) {
-                out.write("<a href = \"travellers?page=" + i + "\">" + i + "</a>&nbsp&nbsp");
-            }
+                if (travellersList.getAmount()>0) {
+                    for (int i = 1; i <= travellersList.getAmount(); i++) {
+                        out.write("<a href = \"\\travellers?page=" + i + "\">" + i + "</a>&nbsp&nbsp");
+                    }
+                }
         }catch(IOException e) {
             log.error(e.getStackTrace());
         }
         return SKIP_BODY;
         }
-
-
     }
 
 

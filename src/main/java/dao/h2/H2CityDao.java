@@ -15,7 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * DAO layer for database H2 for table City 
+ * DAO layer for database H2 for table City
+ * @see dao.CityDao
  * @author Ali Yan
  * @version 1.0
  */
@@ -36,7 +37,7 @@ public class H2CityDao implements CityDao{
 
         try (Connection connection = dataSource.getConnection();
              Statement statement = connection.createStatement();
-             ResultSet resultSet = statement.executeQuery(sql)) {
+             ResultSet resultSet = statement.executeQuery(sql)){
             while (resultSet.next())
                 city = new City(
                         resultSet.getInt("current_city"),
@@ -45,7 +46,7 @@ public class H2CityDao implements CityDao{
                                 resultSet.getInt("country_id"),
                                 resultSet.getString("country_name")));
         }catch(SQLException s){
-            log.error(s.getStackTrace());
+            log.error(s.toString());
         }
 
         return city;
@@ -69,7 +70,7 @@ public class H2CityDao implements CityDao{
                                 resultSet.getString ("name"))));
 
         }catch(SQLException s){
-        log.error(s.getMessage());
+        log.error(s.toString());
     }
         return cities;
     }

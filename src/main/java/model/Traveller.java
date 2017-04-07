@@ -5,6 +5,7 @@ import lombok.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+@SuppressWarnings("DanglingJavadoc")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

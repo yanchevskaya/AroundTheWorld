@@ -14,7 +14,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * DAO layer for database H2 for table City
+ * DAO layer for database H2 for table Country
+ * @see dao.CountryDao
  * @author Ali Yan
  * @version 1.0
  */
@@ -41,7 +42,7 @@ public class H2CountryDao implements CountryDao{
                         resultSet.getInt("id"),
                         resultSet.getString("name")));
         } catch (SQLException s){
-            log.error(s.getStackTrace());
+            log.error(s.toString());
         }
 
         return countries;

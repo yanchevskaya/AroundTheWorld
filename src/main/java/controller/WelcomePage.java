@@ -16,12 +16,10 @@ import static model.Traveller.TRAVELLER;
  */
 @WebServlet("/")
 public class WelcomePage extends HttpServlet {
-    private Traveller traveller;
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-       traveller = (Traveller) request.getSession().getAttribute(TRAVELLER);
+       Traveller traveller = (Traveller) request.getSession().getAttribute(TRAVELLER);
        request.setAttribute("travellerName", traveller.getFirstName());
        request.getRequestDispatcher("/WEB-INF/index.jsp").forward(request,response);
   }

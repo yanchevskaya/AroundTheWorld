@@ -44,7 +44,6 @@ public class EmailPassword extends HttpServlet {
       protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String firstName = request.getParameter("first_name");
         String lastName = request.getParameter("last_name");
-        log.debug("Get information about user -  "+firstName+" "+ lastName);
     /**
      * check if first name and last name are correct and don't contain any numbers
      */
@@ -70,7 +69,6 @@ public class EmailPassword extends HttpServlet {
             /**
              * check if date of birthday is correct
              */
-            log.debug("Trying to check information about date");
             int day = Integer.parseInt(request.getParameter("day"));
             int month = Integer.parseInt(request.getParameter("month"));
             int year = Integer.parseInt(request.getParameter("year"));
@@ -80,7 +78,6 @@ public class EmailPassword extends HttpServlet {
              * gender could be 0,1 or null
              * otherwise put add information to traveller
              */
-            log.debug("Trying to check information about gender");
             if (request.getParameter("gender") == null) {
                 request.setAttribute(ERROR, "wrong.gender");
                 throw new WrongData("User hasn't chosen gender");
@@ -88,7 +85,6 @@ public class EmailPassword extends HttpServlet {
                 /**
                  * create new object of traveller and add information about user
                  */
-                log.debug("Create object Traveller");
                 Traveller traveller = new Traveller();
                 traveller.setFirstName(firstName);
                 traveller.setLastName(lastName);
@@ -101,8 +97,6 @@ public class EmailPassword extends HttpServlet {
                  * data of user add to session
                  */
                 request.getSession().setAttribute(TRAVELLER, traveller);
-                log.debug("Put information about "+ traveller.getFirstName() + " "+
-                traveller.getLastName() +" into SESSION");
                 request.getRequestDispatcher("/WEB-INF/registration/email.jsp").forward(request, response);
             }
         }catch (WrongData w) {

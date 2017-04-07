@@ -17,15 +17,15 @@
     <title>${entitle}</title>
 </head>
 <body>
-<a href = "profile"> ${profile}</a> &nbsp&nbsp <a href = "/"> ${main}</a>  &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-<a href = "logout"> ${logout}</a><br/><br/>
+<a href = "/profile"> ${profile}</a> &nbsp&nbsp <a href = "/"> ${main}</a>  &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+<a href = "/logout"> ${logout}</a><br/><br/>
 
 <form action="/travellers/find" method="post">
     <input name = "traveller" value=""/>
     <input type="submit" value="Find"/><br/>
 </form>
 
-<table border="1" cellpadding="3" width="50%">
+<table width="50%">
 <tr><th>${entitle}</th><th>${currentplace}</th></tr><br/>
 <usertag:travellers travellersList="${travellers}"/>
 

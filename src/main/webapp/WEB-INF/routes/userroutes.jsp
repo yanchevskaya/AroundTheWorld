@@ -1,4 +1,3 @@
-<%--suppress JspAbsolutePathInspection --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -22,8 +21,8 @@
 
 <body>
 
-<a href = "profile"> ${profile}</a> &nbsp&nbsp <a href = "/"> ${main}</a>  &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-<a href = "logout"> ${logout}</a><br/><br/>
+<a href = "/profile"> ${profile}</a> &nbsp&nbsp <a href = "/"> ${main}</a>  &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+<a href = "/logout"> ${logout}</a><br/><br/>
 
 <form action="/myroutes/create" method="post">
     <input type="submit" value="${create}"/><br/>
@@ -32,12 +31,11 @@
 <form action ="/myroutes/delete" method = "post">
     <input type="submit" value="${delete}">
 
-<table border="1"  width="50%">
+<table width="50%">
     <tr><th>${entitle}</th><th>${description}</th><th>${choose}</th></tr><br/>
     <usertag:myRoutes routeList="${routes}"/>
 </table>
 </form>
-
 
 </body>
 </html>

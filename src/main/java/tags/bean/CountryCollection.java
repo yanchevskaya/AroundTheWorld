@@ -32,6 +32,4 @@ public class CountryCollection {
     public void setAmount(int amount) {
         this.amount = amount;
     }
-
-
 }

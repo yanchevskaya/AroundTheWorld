@@ -25,7 +25,7 @@
     <input type="submit" value="Find"/><br/>
 </form>
 
-<table border="1"  width="25%">
+<table width="25%">
     <tr><th>${country}</th></tr><br/>
     <usertag:cities cityList="${cities}"/>
 

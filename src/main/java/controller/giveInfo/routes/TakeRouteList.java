@@ -13,7 +13,6 @@ import java.util.List;
 class TakeRouteList {
 
     /**
-     *
      * @param total - number of things to print
      * @param pageStart - from which element to print the information
      * @param route -list of routes
@@ -26,20 +25,19 @@ class TakeRouteList {
 
         if (pageStart!=0)
         pageStart = (pageStart - 1) * total;
-
         pageEnd = pageStart + total;
 
         if (route == null)
              return new RouteCollection(route, count);
 
+        if (route.size()>total)
+        count = route.size() % total != 0 ? route.size() / total + 1 : route.size() / total;
+
         if (route.size() < pageEnd)
             pageEnd = route.size();
 
-            List<Route> shortList = route.subList(pageStart, pageEnd);
-            count = route.size() % total != 0 ? route.size() / total + 1 : route.size() / total;
+        List<Route> shortList = route.subList(pageStart, pageEnd);
 
         return new RouteCollection(shortList, count);
     }
-
-
 }

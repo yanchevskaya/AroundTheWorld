@@ -3,6 +3,7 @@ package model;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+@SuppressWarnings("DanglingJavadoc")
 @NoArgsConstructor
 @AllArgsConstructor
 
@@ -45,12 +46,11 @@ public class City  {
 
 
     @Override
-    @SuppressWarnings("all")
     public boolean equals(Object o) {
         if (o == this) return true;
         if (!(o instanceof City)) return false;
         final City other = (City) o;
-        if (!other.canEqual((Object) this)) return false;
+        if (!other.canEqual(this)) return false;
         if (this.getId() != other.getId()) return false;
         final Object this$name = this.getName();
         final Object other$name = other.getName();
@@ -73,7 +73,7 @@ public class City  {
         return result;
     }
 
-    protected boolean canEqual(Object other) {
+    private boolean canEqual(Object other) {
         return other instanceof City;
     }
 

@@ -16,6 +16,7 @@ import java.util.Formatter;
  * @author Ali Yan
  * @version 1.0
  */
+@SuppressWarnings("DanglingJavadoc")
 public class ProfileTag extends TagSupport {
     private Traveller traveller;
     private static final Logger log = LogManager.getLogger(ProfileTag.class);
@@ -44,7 +45,6 @@ public class ProfileTag extends TagSupport {
         } finally {
              formatter.close();
         }
-
         return SKIP_BODY;
     }
 }

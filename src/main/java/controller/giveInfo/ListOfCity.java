@@ -2,8 +2,6 @@ package controller.giveInfo;
 
 import dao.CityDao;
 import model.City;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import tags.bean.CityCollection;
 
 import javax.servlet.ServletConfig;
@@ -22,7 +20,6 @@ import java.util.List;
  */
 @WebServlet("/cities")
 public class ListOfCity extends HttpServlet {
-    private static final Logger log = LogManager.getLogger(ListOfCity.class);
     private CityDao cityDao;
      /**
      * number of element which need to show on one page
@@ -48,7 +45,7 @@ public class ListOfCity extends HttpServlet {
         /**
          * divide all information into some pages
          */
-        int count;
+        int count=0;
         /**
          * from which element show information
          */
@@ -57,9 +54,7 @@ public class ListOfCity extends HttpServlet {
          *  till which element show information
          */
         int pageEnd = 2;
-        log.debug ("Get information about page");
         String page = request.getParameter("page");
-        log.debug("Request from page "+page);
         if (page != null) {
             pageStart = Integer.parseInt(page);
             pageStart = (pageStart - 1) * TOTAL;
@@ -68,32 +63,29 @@ public class ListOfCity extends HttpServlet {
         /**
          * show information about city
          */
-        log.debug("Get information about country");
         if (request.getParameter("country") != null) {
             String countryName = request.getParameter("country");
             /**
              * receive information about city from database
              */
-            log.debug("Get information about list of cities");
             List<City> cities = cityDao.getByCountryName(countryName);
-
             /**
              * divide city into some pieces to show on different pages
              */
-            log.debug("Divide information into needed part");
+            if (cities.size() < pageEnd)
+            pageEnd = cities.size();
             List<City> subCities = cities.subList(pageStart, pageEnd);
             /**
              * receive amount of pages
              */
+            if (cities.size()>2)
             count = cities.size() % TOTAL != 0 ? cities.size() / TOTAL + 1 : cities.size() / TOTAL;
+
             CityCollection cityList = new CityCollection(subCities, count, countryName);
 
-            log.debug("Set information about country and its Cities");
             request.setAttribute("cities", cityList);
             request.setAttribute("country", countryName);
-            log.debug("Redirect to country/city.jsp");
             request.getRequestDispatcher("/WEB-INF/countries/city.jsp").forward(request, response);
         }
-
     }
 }

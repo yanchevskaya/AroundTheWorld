@@ -3,7 +3,6 @@ package dao;
 import model.Traveller;
 
 import java.util.List;
-import java.util.Optional;
 
 /**
  * DAO layer for table Traveller
@@ -49,6 +48,11 @@ public interface TravellerDao {
      */
     List<Traveller> getByName(String one, String two);
 
+    /**
+     * receive list of Travellers if their name contains parameters
+     * @param name - first name or last name try to find concurrences  with this parameter
+     * @return List of Travellers if exists, otherwise - null
+     */
     List<Traveller> getByName(String name);
 
     /**

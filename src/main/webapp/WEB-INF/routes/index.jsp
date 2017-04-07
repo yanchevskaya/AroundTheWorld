@@ -19,18 +19,17 @@
 
 <body>
 
-<a href = "profile"> ${profile}</a> &nbsp&nbsp <a href = "/"> ${main}</a>  &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
-<a href = "logout"> ${logout}</a><br/><br/>
+<a href = "/profile"> ${profile}</a> &nbsp&nbsp <a href = "/"> ${main}</a>  &nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+<a href = "/logout"> ${logout}</a><br/><br/>
 
 <form action="/routes" method="post">
     <input name = "traveller" value=""/>
     <input type="submit" value="Find"/><br/>
 </form>
 
-<table border="1"  width="50%">
+<table width="75%">
     <tr><th>${entitle}</th><th>${description}</th><th>${author}</th></tr><br/>
     <usertag:routes routeList="${routes}"/>
-
 
 </body>
 </html>

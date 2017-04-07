@@ -1,5 +1,8 @@
 package filter;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
@@ -15,9 +18,11 @@ import java.io.IOException;
 @WebFilter("/*")
 public class EncodeFilter implements HttpFilter {
     private FilterConfig filterConfig;
+    private Logger log;
 
     public void init (FilterConfig filterConfig) throws ServletException {
         this.filterConfig = filterConfig;
+        log = LogManager.getLogger(EncodeFilter.class);
     }
 
     @Override
@@ -25,6 +30,7 @@ public class EncodeFilter implements HttpFilter {
 
         if (!"UTF-8".equalsIgnoreCase(request.getCharacterEncoding()))
             request.setCharacterEncoding("UTF-8");
+        log.info ("Charset was set");
 
         chain.doFilter(request, response);
     }

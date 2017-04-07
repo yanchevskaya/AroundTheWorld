@@ -13,6 +13,7 @@ import java.util.List;
 
 /**
  * DAO layer for database H2 for table Routes
+ * @see dao.RouteDao
  * @author Ali Yan
  * @version 1.0
  */
@@ -45,7 +46,7 @@ public class H2RouteDao implements RouteDao {
                     route.setId(generatedKeys.getInt(1));
             }
             }catch (SQLException s){
-            log.error (s.getStackTrace());
+            log.error (s.toString());
         }
         return route.getId();
     }
@@ -60,10 +61,8 @@ public class H2RouteDao implements RouteDao {
             statement.executeUpdate(sql1);
             statement.executeUpdate(sql2);
         } catch (SQLException s) {
-            log.error(s.getStackTrace());
+            log.error(s.toString());
         }
-
-
     }
 
     @Override
@@ -82,7 +81,7 @@ public class H2RouteDao implements RouteDao {
                                 resultSet.getString("last_name")),
                         resultSet.getString("description")));
         } catch (SQLException s) {
-            log.error(s.getStackTrace());
+            log.error(s.toString());
         }
         return routes;
     }
@@ -105,7 +104,6 @@ public class H2RouteDao implements RouteDao {
         } catch (SQLException s) {
         log.error(s.getStackTrace());
     }
-
         return route;
     }
 
@@ -141,7 +139,7 @@ public class H2RouteDao implements RouteDao {
         String sql = "UPDATE Route SET name = '" + name + "', description = '" + description +
                 "' WHERE id = " + id;
         try (Connection connection = dataSource.getConnection();
-             Statement statement = connection.createStatement();) {
+             Statement statement = connection.createStatement()) {
             statement.executeUpdate(sql);
         } catch (SQLException s) {
             log.error(s.getStackTrace());

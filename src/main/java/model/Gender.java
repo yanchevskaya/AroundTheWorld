@@ -1,7 +1,6 @@
 package model;
 
 import java.util.Arrays;
-import java.util.Optional;
 
 /**
  * Enumeration for choosing gender of user

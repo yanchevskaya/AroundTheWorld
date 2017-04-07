@@ -105,10 +105,6 @@ public class UploadController extends HttpServlet{
         }
 
 
-
-
-
-
             //            try {
 //                String name = request.getParameter("name");
 //                Part filePart = request.getPart("photo");

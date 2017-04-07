@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-
 /**
  * change language
  * @author Ali Yan
@@ -19,7 +18,6 @@ import java.io.IOException;
 @WebServlet("/local")
 public class Local extends HttpServlet {
     private static final Logger log = LogManager.getLogger(Local.class);
-
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

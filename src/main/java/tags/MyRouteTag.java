@@ -16,11 +16,13 @@ import java.util.Collection;
  * @author Ali Yan
  * @version 1.0
  */
+@SuppressWarnings({"DanglingJavadoc", "SpellCheckingInspection"})
 public class MyRouteTag extends TagSupport {
     private static final Logger log = LogManager.getLogger(MyRouteTag.class);
 
     private RouteCollection routeList;
 
+    @SuppressWarnings("unused")
     public void setRouteList(RouteCollection routeList) {
         this.routeList = routeList;
     }
@@ -33,13 +35,11 @@ public class MyRouteTag extends TagSupport {
             Collection<Route> listOfRoutes = routeList.getRoutes();
 
             for (Route route : listOfRoutes) {
-
                 out.write("<tr><td><a href = \"myroutes?id=" + route.getId() + "\">" +
                         route.getName() + "</a><td>" + route.getDescription() + "</td>" +
                         "<td><input type = \"checkbox\" name = \"id\" value = \"" + route.getId() + "\">" +
                         "</td></br></td></tr>");
             }
-
             out.write("</table>");
             /**
              * print links for pages if it needs

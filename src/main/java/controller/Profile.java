@@ -16,20 +16,21 @@ import static model.Traveller.TRAVELLER;
  * @version 1.0
  */
 @WebServlet("/profile")
-public class Profile extends HttpServlet{
+public class Profile extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-       Traveller traveller = (Traveller)request.getSession().getAttribute(TRAVELLER);
-       request.setAttribute("traveller", traveller);
-       request.setAttribute("travellername", traveller.getFirstName()+" " +traveller.getLastName());
-       request.getRequestDispatcher("/WEB-INF/profile/index.jsp").forward(request,response);//перенаправить обработку запроса другому ресурсу
+        Traveller traveller = (Traveller) request.getSession().getAttribute(TRAVELLER);
+        request.setAttribute("traveller", traveller);
+        request.setAttribute("travellername", traveller.getFirstName() + " " + traveller.getLastName());
+        request.getRequestDispatcher("/WEB-INF/profile/index.jsp").forward(request, response);
     }
+        @Override
+        protected void doGet (HttpServletRequest request, HttpServletResponse response) throws
+        ServletException, IOException {
+            doPost(request, response);
+        }
 
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost (request,response);
-    }
 }
 
 

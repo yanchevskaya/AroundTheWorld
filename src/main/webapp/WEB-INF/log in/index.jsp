@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<form action="/entrance" method="post">
+<form action="${pageContext.servletContext.contextPath}/entrance" method="post">
     <input type="submit" value="${log_in}" /><br />
 </form>
 

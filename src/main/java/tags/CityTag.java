@@ -36,8 +36,9 @@ public class CityTag extends TagSupport{
             }
 
             out.write("</table>");
+            if (cityList.getAmount()!=0)
             for (int i = 1; i <= cityList.getAmount(); i++) {
-                out.write("<a href = \"countries?country=" + cityList.getCountryName() +
+                out.write("<a href = \"cities?country=" + cityList.getCountryName() +
                         "&page=" + i + "\">" + i + "</a>&nbsp&nbsp");
             }
         }catch (IOException e){

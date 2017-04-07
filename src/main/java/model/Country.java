@@ -3,6 +3,7 @@ package model;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
+@SuppressWarnings("DanglingJavadoc")
 @AllArgsConstructor
 @NoArgsConstructor
 
@@ -58,7 +59,7 @@ public class Country {
         return result;
     }
 
-    protected boolean canEqual(Object other) {
+    private boolean canEqual(Object other) {
         return other instanceof Country;
     }
 

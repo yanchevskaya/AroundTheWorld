@@ -3,8 +3,6 @@ package controller.giveInfo.routes;
 import dao.RouteDao;
 import model.Route;
 import model.Traveller;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -24,7 +22,6 @@ import static model.Traveller.TRAVELLER;
 @SuppressWarnings("SpellCheckingInspection")
 @WebServlet("/myroutes/create")
 public class CreateRoute extends HttpServlet {
-    private static final Logger log = LogManager.getLogger(CreateRoute.class);
     private RouteDao routeDao;
 
     @Override
@@ -35,34 +32,21 @@ public class CreateRoute extends HttpServlet {
     @SuppressWarnings("DanglingJavadoc")
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
         /**
          * check if user wants to create new route receive information and add it to database
          */
-        log.debug("Check if user's created new route");
-        if (request.getParameter("new.route")!=null){
+        String nameOfRoute = request.getParameter("new.route");
+        if (nameOfRoute!=null && !nameOfRoute.isEmpty()){
 
-            log.debug("Create object Route");
             Route route = new Route();
-            log.debug("Set name for Route");
-            route.setName(request.getParameter("new.route"));
-            log.debug("Set traveller id for Route");
             route.setTraveller((Traveller)request.getSession().getAttribute(TRAVELLER));
-            log.debug("Check if route has description");
+            route.setName(nameOfRoute);
             String description = request.getParameter("route.description");
-            if (description!=null){
-                log.debug("Set route's description");
-                route.setDescription(description);
-            }
-            log.debug("Add information about route into data base");
+            route.setDescription(description);
             routeDao.create(route);
 
-            log.debug("Redirect user into myroutes url");
             response.sendRedirect("/myroutes");
-        }
-
-        else {
-            log.debug("Redirect user into routes/create.jsp");
+        } else {
             request.getRequestDispatcher("/WEB-INF/routes/create.jsp").forward(request, response);
         }
     }

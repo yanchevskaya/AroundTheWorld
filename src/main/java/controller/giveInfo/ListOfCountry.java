@@ -3,8 +3,6 @@ package controller.giveInfo;
 import dao.CountryDao;
 
 import model.Country;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import tags.bean.CountryCollection;
 
@@ -24,7 +22,6 @@ import java.util.List;
  */
 @WebServlet("/countries")
 public class ListOfCountry extends HttpServlet{
-    private static final Logger log = LogManager.getLogger(ListOfCountry.class);
     private CountryDao countryDao;
     /**
      * number of element which need to show on one page
@@ -50,7 +47,7 @@ public class ListOfCountry extends HttpServlet{
         /**
          * divide all information into some pages
          */
-        int count;
+        int count=0;
         /**
          * from which element show information
          */
@@ -60,7 +57,6 @@ public class ListOfCountry extends HttpServlet{
          */
         int pageEnd = 2;
         String page = request.getParameter("page");
-        log.debug("Request from page "+page);
         if (page != null) {
             pageStart = Integer.parseInt(page);
             pageStart = (pageStart - 1) * TOTAL;
@@ -70,16 +66,15 @@ public class ListOfCountry extends HttpServlet{
         /**
          * get all countries from database divide it into some pieces
          */
-        log.debug("Get information about countries");
         List<Country> countries = countryDao.getAll();
-        log.debug("Divide information for needed part");
-        List<Country> subCountries = countries.subList(pageStart,pageEnd);
+
+        if (countries.size()>2)
         count = countries.size() % TOTAL != 0 ? countries.size()/TOTAL + 1 : countries.size()/TOTAL;
+
+        List<Country> subCountries = countries.subList(pageStart,pageEnd);
         CountryCollection countryList = new CountryCollection(subCountries, count);
 
-        log.debug("Set attribute to request - list of country");
         request.setAttribute("countries", countryList);
-        log.debug("Redirect to countries/index.jsp");
         request.getRequestDispatcher("/WEB-INF/countries/index.jsp").forward(request, response);
     }
 }

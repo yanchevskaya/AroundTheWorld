@@ -3,6 +3,7 @@ package model;
 import lombok.*;
 
 
+@SuppressWarnings("DanglingJavadoc")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

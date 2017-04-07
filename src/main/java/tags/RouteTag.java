@@ -16,10 +16,12 @@ import java.util.Collection;
  * @author Ali Yan
  * @version 1.0
  */
+@SuppressWarnings("DanglingJavadoc")
 public class RouteTag extends TagSupport{
     private static final Logger log = LogManager.getLogger(RouteTag.class);
     private RouteCollection routeList;
 
+        @SuppressWarnings("unused")
         public void setRouteList(RouteCollection routeList) {
             this.routeList = routeList;
         }
@@ -32,18 +34,17 @@ public class RouteTag extends TagSupport{
                 JspWriter out = pageContext.getOut();
                 try {
                     for (Route route : listOfRoutes) {
-                        out.write("<tr><td><a href = \"routes?id=" + route.getId() + "\">" +
+                        out.write("<tr><td><a href = \"\\routes?id=" + route.getId() + "\">" +
                                 route.getName() + "</a><td>" + route.getDescription() + "</td>" +
                                 "<td>" + route.getTraveller().getFirstName() + " " + route.getTraveller().getLastName() +
                                 "</td></br></td></tr>");
                     }
-
                     out.write("</table>");
                     /**
                      * print links for pages if it needs
                      */
                     for (int i = 1; i <= routeList.getAmount(); i++) {
-                        out.write("<a href = \"routes?page=" + i + "\">" + i + "</a>&nbsp&nbsp");
+                        out.write("<a href = \"\\routes?page=" + i + "\">" + i + "</a>&nbsp&nbsp");
                     }
                 } catch (IOException e) {
                     log.error(e.getStackTrace());

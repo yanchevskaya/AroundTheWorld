@@ -3,7 +3,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ page errorPage="../error/dataError.jsp" %>
 
-
 <html>
 <head>
     <fmt:setLocale value="${sessionScope.local}"/>

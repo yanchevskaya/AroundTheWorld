@@ -16,10 +16,12 @@ import java.util.Collection;
  * @author Ali Yan
  * @version 1.0
  */
+@SuppressWarnings("DanglingJavadoc")
 public class CountryTag extends TagSupport {
     private static final Logger log = LogManager.getLogger(CountryTag.class);
     private CountryCollection countryList;
 
+@SuppressWarnings("unused")
 public void setCountryList(CountryCollection countryList) {
     this.countryList = countryList;
 }
@@ -31,11 +33,9 @@ public void setCountryList(CountryCollection countryList) {
             Collection<Country> listOfCountries = countryList.getCountries();
 
             for (Country country : listOfCountries) {
-
                 out.write("<tr><td><a href = \"cities?country=" + country.getName() + "\">" +
                         country.getName() + "</br></a></td></tr>");
             }
-
             out.write("</table>");
             /**
              * print links for pages if it needs
