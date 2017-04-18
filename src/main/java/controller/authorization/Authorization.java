@@ -23,54 +23,56 @@ import static model.Traveller.TRAVELLER;
  * caught and user is redirected to error page
  * if data is right data of user save in Session
  * user is redirected to welcome page
+ *
  * @author Ali Yan
  * @version 1.0
  */
 
-     @WebServlet("/entrance/authorization")
-    public class Authorization extends HttpServlet {
-        private transient TravellerDao travellerDao;
-        private transient CityDao cityDao;
-        private static final Logger log = LogManager.getLogger(Authorization.class);
+@WebServlet("/entrance/authorization")
+public class Authorization extends HttpServlet {
+  private transient TravellerDao travellerDao;
+  private transient CityDao cityDao;
+  private static final Logger log = LogManager.getLogger(Authorization.class);
 
-        @Override
-        public void init(ServletConfig config) throws ServletException {
-            travellerDao = (TravellerDao) config.getServletContext().getAttribute("TravellerDao");
-            cityDao = (CityDao) config.getServletContext().getAttribute("CityDao");
-        }
-        @SuppressWarnings("DanglingJavadoc")
-        @Override
-        protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-            String email = request.getParameter("j_username");
-            @SuppressWarnings("SpellCheckingInspection")
-            String hashPassword = request.getParameter("j_password").trim().hashCode()*73+"adgjlnc";
+  @Override
+  public void init(ServletConfig config) throws ServletException {
+    travellerDao = (TravellerDao) config.getServletContext().getAttribute("TravellerDao");
+    cityDao = (CityDao) config.getServletContext().getAttribute("CityDao");
+  }
 
-            Traveller authorizedTraveller = travellerDao.getIfExist(email, hashPassword);
-            try {
-                if (authorizedTraveller==null) {
-                    request.setAttribute("error", "try.again");
-                    throw new WrongData("User with these email and password aren't contained in DB");
-                }
-            /**
-             * if user has information about current place in data base, set it into traveller parameter
-             */
-            City city = cityDao.getCity(authorizedTraveller.getId());
-            if (city!=null)
-                authorizedTraveller.setCurrentCity(city);
+  @SuppressWarnings("DanglingJavadoc")
+  @Override
+  protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    String email = request.getParameter("j_username");
+    @SuppressWarnings("SpellCheckingInspection")
+    String hashPassword = request.getParameter("j_password").trim().hashCode() * 73 + "adgjlnc";
 
-            request.getSession().setAttribute(TRAVELLER, authorizedTraveller);
-            response.sendRedirect("/");
+    Traveller authorizedTraveller = travellerDao.getIfExist(email, hashPassword);
+    try {
+      if (authorizedTraveller == null) {
+        request.setAttribute("error", "try.again");
+        throw new WrongData("User with these email and password aren't contained in DB");
+      }
+      /**
+       * if user has information about current place in data base, set it into traveller parameter
+       */
+      City city = cityDao.getCity(authorizedTraveller.getId());
+      if (city != null)
+        authorizedTraveller.setCurrentCity(city);
 
-            } catch (WrongData w) {
-                log.info(w.getErrorMessage());
-                request.getRequestDispatcher("/WEB-INF/error/authorizationError.jsp").forward(request, response);
-            }
-        }
+      request.getSession().setAttribute(TRAVELLER, authorizedTraveller);
+      response.sendRedirect("/");
 
-        @Override
-        protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-            doPost(request, response);
-        }
+    } catch (WrongData w) {
+      log.info(w.getErrorMessage());
+      request.getRequestDispatcher("/WEB-INF/error/authorizationError.jsp").forward(request, response);
+    }
+  }
+
+  @Override
+  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    doPost(request, response);
+  }
 }
 
 

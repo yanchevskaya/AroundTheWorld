@@ -12,6 +12,7 @@ import java.io.IOException;
 
 /**
  * servlet for updating routes
+ *
  * @author Ali Yan
  * @version 1.0
  */
@@ -23,7 +24,7 @@ public class ManageRoute extends HttpServlet {
     @Override
     public void init(ServletConfig config) throws ServletException {
         routeDao = (RouteDao) config.getServletContext().getAttribute("RouteDao");
-        }
+    }
 
     @SuppressWarnings("DanglingJavadoc")
     @Override
@@ -31,7 +32,7 @@ public class ManageRoute extends HttpServlet {
         /**
          * check if user press button change and update information in data base
          */
-        if (request.getParameter("change")!=null) {
+        if (request.getParameter("change") != null) {
             int id = Integer.parseInt(request.getParameter("change"));
 
             String name = request.getParameter("name");
@@ -40,9 +41,8 @@ public class ManageRoute extends HttpServlet {
             if (!name.isEmpty()) {
                 routeDao.update(name, description, id);
                 response.sendRedirect("/myroutes");
-            }
-            else {
-                response.sendRedirect("/myroutes?id="+id);
+            } else {
+                response.sendRedirect("/myroutes?id=" + id);
             }
         }
     }

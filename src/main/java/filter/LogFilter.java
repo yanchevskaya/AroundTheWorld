@@ -12,7 +12,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 /**
- * Filter fo logging
+ * Filter for logging
  * @author Ali Yan
  * @version 1.0
  */
@@ -44,7 +44,6 @@ public class LogFilter implements HttpFilter {
             chain.doFilter(request,response);
         }else
             chain.doFilter(request, response);
-
     }
 
     @Override

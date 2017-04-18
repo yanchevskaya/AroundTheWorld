@@ -12,6 +12,7 @@ import java.io.IOException;
 
 /**
  * servlet for deleting routes
+ *
  * @author Ali Yan
  * @version 1.0
  */
@@ -32,5 +33,5 @@ public class DeleteRoute extends HttpServlet {
         int id = Integer.parseInt(request.getParameter("id"));
         routeDao.remove(id);
         response.sendRedirect("/myroutes");
-        }
+    }
 }

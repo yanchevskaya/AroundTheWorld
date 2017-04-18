@@ -49,7 +49,7 @@ public class DBInit implements ServletContextListener {
             }
             statement.executeBatch();
         } catch (IOException | SQLException e){
-            log.warn(e.toString());
+            log.error("Unexpected message", e);
         }
     }
 }

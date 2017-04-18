@@ -1,4 +1,3 @@
-group 'com.epam.fp.atw'
 version '1.0-SNAPSHOT'//plug version
 
 apply plugin: 'java'
