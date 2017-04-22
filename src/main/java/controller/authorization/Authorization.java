@@ -45,7 +45,7 @@ public class Authorization extends HttpServlet {
   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
     String email = request.getParameter("j_username");
     @SuppressWarnings("SpellCheckingInspection")
-    String hashPassword = request.getParameter("j_password").trim().hashCode() * 73 + "adgjlnc";
+    String hashPassword = request.getParameter("j_password").trim().hashCode() * 73 + "adgjlnc"; //TODO: md5
 
     Traveller authorizedTraveller = travellerDao.getIfExist(email, hashPassword);
     try {
@@ -68,11 +68,11 @@ public class Authorization extends HttpServlet {
       request.getRequestDispatcher("/WEB-INF/error/authorizationError.jsp").forward(request, response);
     }
   }
-
-  @Override
-  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-    doPost(request, response);
-  }
+//
+//  @Override
+//  protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//    doPost(request, response);
+//  }
 }
 
 

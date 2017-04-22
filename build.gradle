@@ -17,8 +17,7 @@ configurations{
     testCompile.extendsFrom compileOnly //to using lombok in tests
 }
 
-dependencies { 
-//    compile 'ch.qos.logback:logback-classic:+', //logger
+dependencies {
     compile 'com.h2database:h2:+', //DB H2
             'org.glassfish.web:javax.servlet.jsp.jstl:+',
             'org.apache.commons:commons-io:+',
@@ -33,7 +32,10 @@ dependencies {
     compileOnly 'org.projectlombok:lombok:+'
 
     testCompile 'org.junit.jupiter:junit-jupiter-api:+', //JUnit5
+            'org.junit.platform:junit-platform-launcher:+',
             'org.hamcrest:java-hamcrest:+'//for JUnit
+
+    testRuntime 'org.junit.jupiter:junit-jupiter-engine:+'
     }
 
 task wrapper(type: Wrapper) {//wrapper for Gradle

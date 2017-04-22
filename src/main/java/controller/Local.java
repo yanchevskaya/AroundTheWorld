@@ -20,15 +20,10 @@ public class Local extends HttpServlet {
     private static final Logger log = LogManager.getLogger(Local.class);
 
     @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         log.info("User has changed language");
         request.getSession().setAttribute("local", request.getParameter("local"));
         response.sendRedirect("/");
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        doPost (request,response);
     }
 }
 

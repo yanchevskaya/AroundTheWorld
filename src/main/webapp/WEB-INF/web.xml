@@ -23,6 +23,12 @@
         <filter-class>filter.LogFilter</filter-class>
     </filter>
 
+    <filter>
+        <display-name>LoginFilter</display-name>
+        <filter-name>LoginFilter</filter-name>
+        <filter-class>filter.LoginFilter</filter-class>
+    </filter>
+
     <resource-ref>
         <res-ref-name>jdbc/TestDB</res-ref-name>
         <res-type>javax.sql.DataSource</res-type>

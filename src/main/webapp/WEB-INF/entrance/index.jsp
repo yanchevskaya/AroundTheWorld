@@ -13,7 +13,7 @@
 </head>
 <body>
 
-<form action="/entrance/authorization" method="post">
+<form action="<c:url value="/entrance/authorization"/>" method="post">
     <c:out value="e-mail:"/><input name= "j_username" placeholder="e-mail"/><br/>
     <c:out value="${password}"/> <input type = password name = "j_password" placeholder="password"/><br/>
 

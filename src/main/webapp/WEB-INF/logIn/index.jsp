@@ -11,18 +11,19 @@
     <fmt:message bundle="${loc}" key="local.button.name.en" var="en_name" />
     <fmt:message bundle="${loc}" key="sign.out" var="sign_out" />
     <fmt:message bundle="${loc}" key="log.in" var="log_in" />
+    <fmt:message bundle="${loc}" key="language" var="language" />
 </head>
 <body>
 
-<form action="${pageContext.servletContext.contextPath}/entrance" method="post">
-    <input type="submit" value="${log_in}" /><br />
+<form action="<c:url value="/entrance"/>" method="get">
+    <input type="submit" value="${log_in}"/><br />
 </form>
 
-<form action="<c:url value="/registration"/>" method="post">
-    <input type="submit" value="${sign_out}" /><br />
+<form action="<c:url value="/registration"/>" method="get">
+    <input type="submit" value="${sign_out}"/><br/>
 </form>
 
-${language} <a href = "/local?local=ru"> ${ru_name}</a> &nbsp <a href = "/local?local=en"> ${en_name} </a>
+${language} <a href = "<c:url value="/local?local=ru"/>"> ${ru_name}</a> &nbsp <a href = "<c:url value="/local?local=en"/>"> ${en_name} </a>
 
 </body>
 </html>

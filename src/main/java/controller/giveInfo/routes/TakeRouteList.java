@@ -10,7 +10,7 @@ import java.util.List;
  * @author Ali Yan
  * @version 1.0
  */
-class TakeRouteList {
+public class TakeRouteList {
 
     /**
      * @param total - number of things to print
@@ -19,7 +19,7 @@ class TakeRouteList {
      * @return bean of routes
      */
     @SuppressWarnings("ConstantConditions")
-     RouteCollection takeRoutes(int total, int pageStart, List<Route> route) {
+     public RouteCollection takeRoutes(int total, int pageStart, List<Route> route) {
         int pageEnd;
         int count=0;
 
